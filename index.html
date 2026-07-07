@@ -55,7 +55,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
 /* ══ SETUP ══ */
 #setup{justify-content:flex-start;align-items:center;padding:0;z-index:1;overflow-y:auto;height:100dvh}
-.setup-box{width:100%;max-width:420px;display:flex;flex-direction:column;align-items:center;padding:16px 16px 20px;min-height:100%;justify-content:center}
+.setup-box{width:100%;max-width:420px;display:flex;flex-direction:column;align-items:center;padding:calc(var(--sat) + 20px) 16px calc(var(--sab) + 52px);min-height:100%;justify-content:flex-start}
 .big-logo{width:84px;height:44px;margin-bottom:10px;filter:drop-shadow(0 0 18px var(--c1));animation:glowPulse 2.5s ease-in-out infinite}
 .app-title{font-size:2.2rem;font-weight:900;letter-spacing:3px}
 .app-sub{color:var(--muted);font-size:.82rem;margin:5px 0 18px;text-align:center;line-height:1.6}
@@ -241,7 +241,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 @keyframes confettiFall{0%{transform:translateY(-10px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
 
 /* notif */
-.notif{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);padding:9px 20px;border-radius:22px;font-size:.77rem;font-weight:600;z-index:9999;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis;pointer-events:none;display:none;background:var(--s1)}
+.notif{position:fixed;top:calc(var(--sat) + 10px);left:50%;transform:translateX(-50%);padding:9px 20px;border-radius:22px;font-size:.77rem;font-weight:600;z-index:9999;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis;pointer-events:none;display:none;background:var(--s1);box-shadow:0 6px 20px rgba(0,0,0,.5)}
 .notif.s{border:1.5px solid var(--c3);color:var(--c3)}
 .notif.e{border:1.5px solid #FF5252;color:#FF5252}
 .notif.i{border:1.5px solid var(--c1);color:var(--c1)}
@@ -251,16 +251,20 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 @keyframes slideDown{from{transform:translateY(-100%)}to{transform:translateY(0)}}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-13px)}}
-@keyframes notifIn{from{transform:translateX(-50%) translateY(12px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
+@keyframes notifIn{from{transform:translateX(-50%) translateY(-12px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
 /* ══ SPLASH ══ */
-#splash{position:fixed;inset:0;z-index:3000;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity .6s ease;overflow:hidden}
+#splash{position:fixed;inset:0;z-index:3000;background:radial-gradient(circle at 50% 42%,#1c1305,#0a0702 70%);display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity .6s ease;overflow:hidden}
 #splash.hide{opacity:0;pointer-events:none}
-.sp-glow{position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,var(--c1-25),transparent 70%);filter:blur(24px);animation:glowPulse 3s ease-in-out infinite}
-.sp-inner{display:flex;flex-direction:column;align-items:center;text-align:center;z-index:1;animation:spPop .8s cubic-bezier(.2,.9,.3,1.4)}
-.sp-logo{filter:drop-shadow(0 0 26px var(--c1));animation:glowPulse 2s ease-in-out infinite}
-.sp-by{margin-top:16px;font-size:.9rem;color:var(--muted);letter-spacing:7px;opacity:0;animation:spFade .6s ease .3s forwards}
-.sp-name{font-size:3.3rem;font-weight:900;letter-spacing:4px;line-height:1.1;margin-top:2px;color:var(--c1);opacity:0;transform:translateY(14px);animation:spUp .7s cubic-bezier(.2,.9,.3,1.2) .45s forwards;background:linear-gradient(180deg,var(--text),var(--c1));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.sp-tag{margin-top:10px;font-size:1.1rem;color:var(--text);opacity:0;animation:spFade .6s ease .95s forwards;letter-spacing:3px;font-weight:700}
+.sp-glow{position:absolute;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(198,110,28,.40),rgba(150,70,20,.16) 48%,transparent 72%);filter:blur(22px);animation:spBreathe 3s ease-in-out infinite}
+.sp-inner{display:flex;flex-direction:column;align-items:center;text-align:center;z-index:1;padding:0 24px;animation:spPop .8s cubic-bezier(.2,.9,.3,1.4)}
+.sp-logo{animation:spPulse 2.2s ease-in-out infinite}
+@keyframes spPulse{0%,100%{filter:drop-shadow(0 0 16px rgba(210,120,32,.55))}50%{filter:drop-shadow(0 0 32px rgba(233,168,52,.8))}}
+@keyframes spBreathe{0%,100%{opacity:.72;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
+.sp-by{margin-top:16px;font-size:.88rem;color:#9c8a5a;letter-spacing:9px;opacity:0;animation:spFade .6s ease .3s forwards}
+.sp-name{font-size:3.4rem;font-weight:900;letter-spacing:4px;line-height:1.1;margin-top:2px;opacity:0;transform:translateY(14px);animation:spUp .7s cubic-bezier(.2,.9,.3,1.2) .45s forwards;background:linear-gradient(180deg,#FFF4D2,#E0A93B 60%,#B8862B);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 10px rgba(200,110,28,.4))}
+.sp-tag{margin-top:10px;font-size:1.15rem;color:#F4C74A;opacity:0;animation:spFade .6s ease .95s forwards;letter-spacing:3px;font-weight:700}
+.sp-quote{margin-top:20px;padding-top:16px;border-top:1px solid rgba(244,199,74,.18);font-size:1rem;color:#d8c9a0;opacity:0;animation:spFade .8s ease 1.4s forwards;letter-spacing:.5px;font-weight:600;max-width:300px;line-height:1.7}
+.sp-quote b{color:#F4C74A;font-weight:800}
 @keyframes spPop{0%{transform:scale(.7);opacity:0}100%{transform:scale(1);opacity:1}}
 @keyframes spFade{to{opacity:1}}
 @keyframes spUp{to{opacity:1;transform:translateY(0)}}
@@ -287,10 +291,11 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 <div id="splash">
   <div class="sp-glow"></div>
   <div class="sp-inner">
-    <div class="sp-logo accent-svg" style="color:var(--c1)"><svg viewBox="0 0 130 115" fill="none" xmlns="http://www.w3.org/2000/svg" width="120" height="106"><g transform="translate(42,62) rotate(-22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="0" cy="-16" r="3.2" fill="currentColor"/><circle cx="0" cy="16" r="3.2" fill="currentColor"/></g><g transform="translate(88,62) rotate(22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="-8" cy="-23" r="3" fill="currentColor"/><circle cx="0" cy="-16" r="3" fill="currentColor"/><circle cx="8" cy="-9" r="3" fill="currentColor"/><circle cx="-8" cy="9" r="3" fill="currentColor"/><circle cx="0" cy="16" r="3" fill="currentColor"/><circle cx="8" cy="23" r="3" fill="currentColor"/></g><g transform="translate(65,50)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="0" cy="-16" r="3.2" fill="currentColor"/><circle cx="-7" cy="10" r="3.2" fill="currentColor"/><circle cx="7" cy="20" r="3.2" fill="currentColor"/></g></svg></div>
+    <div class="sp-logo" style="color:#F4C74A"><svg viewBox="0 0 130 115" fill="none" xmlns="http://www.w3.org/2000/svg" width="120" height="106"><g transform="translate(42,62) rotate(-22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="0" cy="-16" r="3.2" fill="currentColor"/><circle cx="0" cy="16" r="3.2" fill="currentColor"/></g><g transform="translate(88,62) rotate(22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="-8" cy="-23" r="3" fill="currentColor"/><circle cx="0" cy="-16" r="3" fill="currentColor"/><circle cx="8" cy="-9" r="3" fill="currentColor"/><circle cx="-8" cy="9" r="3" fill="currentColor"/><circle cx="0" cy="16" r="3" fill="currentColor"/><circle cx="8" cy="23" r="3" fill="currentColor"/></g><g transform="translate(65,50)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="0" cy="-16" r="3.2" fill="currentColor"/><circle cx="-7" cy="10" r="3.2" fill="currentColor"/><circle cx="7" cy="20" r="3.2" fill="currentColor"/></g></svg></div>
     <div class="sp-by">يُقدّم</div>
     <div class="sp-name">العالمي</div>
     <div class="sp-tag">🎲 دومينو</div>
+    <div class="sp-quote">«اللعب الصح مع الناس الغلط»</div>
   </div>
 </div>
 
@@ -565,7 +570,7 @@ function initSplash(){
   let done=false;
   const hide=()=>{ if(done) return; done=true; sp.classList.add('hide'); setTimeout(()=>{sp.style.display='none';},650); };
   sp.addEventListener('click',hide);
-  setTimeout(hide,2600);
+  setTimeout(hide,3900);
 }
 
 
