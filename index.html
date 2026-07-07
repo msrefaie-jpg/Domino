@@ -474,6 +474,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 </div>
 
 <div class="notif" id="notif"></div>
+<div id="dbg" style="position:fixed;top:calc(var(--sat) + 2px);left:4px;font-size:9px;color:#c00;background:rgba(255,255,255,.82);padding:1px 5px;border-radius:5px;z-index:99999;pointer-events:none;font-family:monospace"></div>
 
 <!-- Watermark -->
 <div class="watermark">
@@ -537,9 +538,19 @@ function updateThemeLabels(){
 function renderThemeSwatches(){}
 function renderThemeList(){}
 function openTheme(){ toggleTheme(); }
-function setAppH(){ try{ document.documentElement.style.setProperty('--appH', window.innerHeight+'px'); }catch(e){} }
+function setAppH(){
+  try{
+    const vv = window.visualViewport ? Math.round(window.visualViewport.height) : 0;
+    const h = Math.max(window.innerHeight||0, vv||0);
+    document.documentElement.style.setProperty('--appH', h+'px');
+    const dbg=document.getElementById('dbg');
+    if(dbg) dbg.textContent = `iH${window.innerHeight} vv${vv} sH${screen.height} cH${document.documentElement.clientHeight} standalone:${(navigator.standalone===true)?'Y':'N'}`;
+  }catch(e){}
+}
 window.addEventListener('resize', setAppH);
 window.addEventListener('orientationchange', ()=>setTimeout(setAppH,250));
+window.addEventListener('load', setAppH);
+if(window.visualViewport) window.visualViewport.addEventListener('resize', setAppH);
 setAppH();
 
 function initSplash(){
