@@ -295,6 +295,9 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 .arch-row span:first-child{flex:1;font-weight:700}
 .arch-ttl{font-size:.66rem;color:var(--muted)}
 .arch-sc{font-family:monospace;font-weight:900;min-width:28px;text-align:left;color:var(--c1)}
+#mPin{z-index:1200}
+.arch-del{background:#FF52521a;border:1px solid #FF525240;border-radius:9px;color:#FF5252;font-size:.72rem;padding:4px 7px;cursor:pointer;flex-shrink:0;font-family:var(--font)}
+.arch-del:active{transform:scale(.9)}
 
 </style>
 </head>
@@ -512,6 +515,22 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   <div class="mbox">
     <div class="mhdr"><div class="mtitle">🎨 الثيم واللون</div><button class="mclose" onclick="closeM('mTheme')">✕</button></div>
     <div id="themeList"></div>
+  </div>
+</div>
+
+<!-- ══ PIN MODAL ══ -->
+<div class="overlay" id="mPin">
+  <div class="mbox">
+    <div class="mhdr"><div class="mtitle" id="pinTitle">🔒 الرمز السري</div><button class="mclose" onclick="closeM('mPin')">✕</button></div>
+    <p class="rst-txt" id="pinMsg" style="margin-bottom:14px"></p>
+    <div style="display:flex;gap:8px;align-items:center">
+      <input id="pinInp" type="password" inputmode="numeric" autocomplete="off" maxlength="12"
+        onkeydown="if(event.key==='Enter')submitPin()"
+        style="flex:1;padding:13px;background:var(--s2);border:1.5px solid var(--c1-50);border-radius:12px;color:var(--c1);font-size:1.4rem;font-weight:800;text-align:center;letter-spacing:8px;outline:none;font-family:monospace" placeholder="••••">
+      <button onclick="togglePinVisible()" title="إظهار" style="padding:13px 15px;background:var(--s2);border:1.5px solid var(--border);border-radius:12px;color:var(--muted);font-size:1.1rem;cursor:pointer">👁️</button>
+    </div>
+    <button onclick="submitPin()" style="width:100%;padding:14px;margin-top:14px;background:linear-gradient(135deg,#69FF4722,#69FF4711);border:2px solid #69FF4760;border-radius:14px;color:#69FF47;font-size:1rem;font-weight:900;cursor:pointer;font-family:var(--font)">تأكيد ✓</button>
+    <button onclick="closeM('mPin')" style="width:100%;padding:11px;margin-top:8px;background:var(--s2);border:1px solid var(--border);border-radius:12px;color:var(--muted);font-size:.86rem;cursor:pointer;font-family:var(--font)">إلغاء</button>
   </div>
 </div>
 
@@ -766,22 +785,74 @@ function openArchive(){
     openM('mArch'); return;
   }
   const TT=['الكنج','صب كنج','صب كوز','الكوز'], MED=['👑','🥈','🥉','🤡'];
-  body.innerHTML=arr.map(g=>{
+  body.innerHTML=arr.map((g,gi)=>{
     const d=new Date(g.ts);
     let date; try{ date=d.toLocaleDateString('ar-EG',{year:'numeric',month:'long',day:'numeric'})+' · '+d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'}); }catch(e){ date=''; }
     return `<div class="arch-card">
-      <div class="arch-hd"><span class="arch-king">👑 ${g.king}</span><span class="arch-date">${date}</span></div>
+      <div class="arch-hd">
+        <span class="arch-king">👑 ${g.king}</span>
+        <span style="display:flex;align-items:center;gap:8px">
+          <span class="arch-date">${date}</span>
+          <button class="arch-del" onclick="requirePin(()=>deleteGame(${gi}))" title="حذف هذه اللعبة">🔒🗑️</button>
+        </span>
+      </div>
       <div class="arch-meta">${g.rounds} جولة · حد ${g.target}</div>
       ${g.players.map((p,i)=>`<div class="arch-row"><span>${MED[i]||''} ${p.name}</span><span class="arch-ttl">${TT[i]||''}</span><span class="arch-sc">${p.score}</span></div>`).join('')}
     </div>`;
-  }).join('')+`<button class="btn-sec" onclick="clearArchive()" style="margin-top:6px;color:#FF5252;border-color:#FF525240">🗑️ مسح كل السجل التاريخي</button>`;
+  }).join('')+`<button class="btn-arch" onclick="requirePin(clearAllArchive)" style="margin-top:6px;color:#FF5252;border-color:#FF525240">🔒🗑️ مسح كل السجل التاريخي</button>`;
   openM('mArch');
 }
-function clearArchive(){
-  if(!confirm('هل تريد مسح كل السجل التاريخي للألعاب السابقة؟')) return;
+function deleteGame(i){
+  const arr=loadArchive();
+  if(i<0 || i>=arr.length) return;
+  const nm=arr[i].king;
+  arr.splice(i,1);
+  try{ localStorage.setItem(LS_ARCH, JSON.stringify(arr)); }catch(e){}
+  openArchive();
+  notif(`🗑️ تم حذف لعبة (${nm})`,'i');
+}
+function clearAllArchive(){
   try{ localStorage.removeItem(LS_ARCH); }catch(e){}
   openArchive();
-  notif('تم مسح السجل التاريخي','i');
+  notif('🗑️ تم مسح كل السجل التاريخي','i');
+}
+
+// ═══════════════════════════
+// PIN PROTECTION for deletions
+// ═══════════════════════════
+const LS_PIN='domino_pin_v1';
+let _pinAction=null, _pinMode='verify';
+function getPin(){ try{ return localStorage.getItem(LS_PIN)||''; }catch(e){ return ''; } }
+function requirePin(action){
+  _pinAction=action;
+  const has=getPin();
+  _pinMode = has ? 'verify' : 'set';
+  document.getElementById('pinTitle').textContent = has ? '🔒 أدخل الرمز السري' : '🔒 إنشاء رمز سري للحذف';
+  document.getElementById('pinMsg').innerHTML = has
+    ? 'الحذف محمي — أدخل الرمز السري للمتابعة'
+    : 'الحذف محمي. عيّن رمزًا سريًا (٤ أرقام على الأقل) يعرفه المسؤول فقط — سيُطلب عند أي حذف لاحق.';
+  const inp=document.getElementById('pinInp');
+  inp.value=''; inp.type='password';
+  openM('mPin');
+  setTimeout(()=>{ try{ inp.focus(); }catch(e){} }, 120);
+}
+function submitPin(){
+  const inp=document.getElementById('pinInp');
+  const v=(inp.value||'').trim();
+  if(_pinMode==='set'){
+    if(v.length<4){ notif('اختر رمزًا من ٤ أرقام على الأقل','e'); return; }
+    try{ localStorage.setItem(LS_PIN, v); }catch(e){}
+    notif('✅ تم تعيين الرمز السري','s');
+  } else {
+    if(v!==getPin()){ notif('❌ رمز خاطئ','e'); inp.value=''; return; }
+  }
+  closeM('mPin');
+  const a=_pinAction; _pinAction=null;
+  if(typeof a==='function') a();
+}
+function togglePinVisible(){
+  const inp=document.getElementById('pinInp');
+  inp.type = inp.type==='password' ? 'text' : 'password';
 }
 
 function startGame(){
