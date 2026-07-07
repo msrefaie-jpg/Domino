@@ -36,13 +36,13 @@ html[data-theme="dark"]{
 html{height:100%}
 html,body{overflow:hidden;background:var(--bg)}
 html.introbg,html.introbg body{background:#0F5132}
-body{font-family:var(--font);color:var(--text);direction:rtl;display:flex;flex-direction:column;position:fixed;top:0;right:0;bottom:0;left:0;height:var(--appH,100dvh);padding-top:var(--sat);padding-bottom:var(--sab);
+body{font-family:var(--font);color:var(--text);direction:rtl;position:fixed;top:0;right:0;bottom:0;left:0;padding-top:var(--sat);padding-bottom:var(--sab);
   font-variant-numeric:tabular-nums}
 input,button{font-family:var(--font)}
 input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 
-.screen{display:none;flex-direction:column;flex:1;min-height:0;overflow:hidden}
+.screen{display:none;position:absolute;inset:0;flex-direction:column;overflow:hidden}
 .screen.active{display:flex}
 
 #bgTiles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
@@ -474,7 +474,6 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 </div>
 
 <div class="notif" id="notif"></div>
-<div id="dbg" style="position:fixed;top:calc(var(--sat) + 2px);left:4px;font-size:9px;color:#c00;background:rgba(255,255,255,.82);padding:1px 5px;border-radius:5px;z-index:99999;pointer-events:none;font-family:monospace"></div>
 
 <!-- Watermark -->
 <div class="watermark">
@@ -538,21 +537,6 @@ function updateThemeLabels(){
 function renderThemeSwatches(){}
 function renderThemeList(){}
 function openTheme(){ toggleTheme(); }
-function setAppH(){
-  try{
-    const vv = window.visualViewport ? Math.round(window.visualViewport.height) : 0;
-    const h = Math.max(window.innerHeight||0, vv||0);
-    document.documentElement.style.setProperty('--appH', h+'px');
-    const dbg=document.getElementById('dbg');
-    if(dbg) dbg.textContent = `iH${window.innerHeight} vv${vv} sH${screen.height} cH${document.documentElement.clientHeight} standalone:${(navigator.standalone===true)?'Y':'N'}`;
-  }catch(e){}
-}
-window.addEventListener('resize', setAppH);
-window.addEventListener('orientationchange', ()=>setTimeout(setAppH,250));
-window.addEventListener('load', setAppH);
-if(window.visualViewport) window.visualViewport.addEventListener('resize', setAppH);
-setAppH();
-
 function initSplash(){
   const sp=document.getElementById('splash'); if(!sp) return;
   document.documentElement.classList.add('introbg');   // green backdrop so no gutter shows during intro
