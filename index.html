@@ -13,9 +13,9 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#07070f;--s1:#0c0c1a;--s2:#111128;--border:#1c1c30;
-  --c1:#00E5FF;--c2:#FF4081;--c3:#69FF47;--c4:#FFD740;
-  --text:#f0f0ff;--muted:#666;--tsub:#bbb;--track:#141428;
+  --bg:#0a0a06;--s1:#14120a;--s2:#1c1810;--border:#33301c;
+  --c1:#FFD24A;--c2:#FF4081;--c3:#69FF47;--c4:#FFD740;
+  --text:#fff8e6;--muted:#8a7f60;--tsub:#cabd94;--track:#241f10;
   --font:'Cairo',sans-serif;
   --sat: env(safe-area-inset-top, 0px);
   --sab: env(safe-area-inset-bottom, 0px);
@@ -282,6 +282,19 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 .theme-prev i{width:13px;height:13px;border-radius:50%;display:block}
 .theme-nm{flex:1;font-weight:700;font-size:.92rem;color:var(--text)}
 .theme-chk{font-size:1.1rem}
+/* resume + archive */
+.resume-note{width:100%;margin-bottom:14px;padding:11px 14px;background:var(--c1-10);border:1.5px solid var(--c1-50);border-radius:13px;color:var(--c1);font-size:.86rem;text-align:center;cursor:pointer;line-height:1.6;display:none;font-weight:700}
+.btn-arch{width:100%;padding:12px;margin-bottom:14px;background:var(--s1);border:1.5px solid var(--border);border-radius:13px;color:var(--text);font-size:.9rem;font-weight:700;cursor:pointer;font-family:var(--font)}
+.btn-arch:active{transform:scale(.98)}
+.arch-card{background:var(--s2);border:1.5px solid var(--border);border-radius:13px;padding:12px;margin-bottom:10px}
+.arch-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:8px}
+.arch-king{font-weight:800;font-size:.95rem;color:var(--c4)}
+.arch-date{font-size:.66rem;color:var(--muted);text-align:left}
+.arch-meta{font-size:.7rem;color:var(--muted);margin-bottom:8px}
+.arch-row{display:flex;align-items:center;gap:8px;font-size:.82rem;padding:3px 0;border-top:1px solid var(--border)}
+.arch-row span:first-child{flex:1;font-weight:700}
+.arch-ttl{font-size:.66rem;color:var(--muted)}
+.arch-sc{font-family:monospace;font-weight:900;min-width:28px;text-align:left;color:var(--c1)}
 
 </style>
 </head>
@@ -305,6 +318,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     <div class="big-logo accent-svg" style="width:104px;height:92px;color:var(--c1)"><svg viewBox="0 0 130 115" fill="none" xmlns="http://www.w3.org/2000/svg" width="104" height="92"><g transform="translate(42,62) rotate(-22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="0" cy="-16" r="3.2" fill="currentColor"/><circle cx="0" cy="16" r="3.2" fill="currentColor"/></g><g transform="translate(88,62) rotate(22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="-8" cy="-23" r="3" fill="currentColor"/><circle cx="0" cy="-16" r="3" fill="currentColor"/><circle cx="8" cy="-9" r="3" fill="currentColor"/><circle cx="-8" cy="9" r="3" fill="currentColor"/><circle cx="0" cy="16" r="3" fill="currentColor"/><circle cx="8" cy="23" r="3" fill="currentColor"/></g><g transform="translate(65,50)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="0" cy="-16" r="3.2" fill="currentColor"/><circle cx="-7" cy="10" r="3.2" fill="currentColor"/><circle cx="7" cy="20" r="3.2" fill="currentColor"/></g></svg></div>
     <div class="app-title">دومينو</div>
     <div class="app-sub">اختر ٤ لاعبين بالترتيب</div>
+    <div class="resume-note" id="resumeNote" onclick="resumeGame()"></div>
 
     <!-- مجموعة اللعب -->
     <div class="group-box">
@@ -338,7 +352,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
       <input class="target-inp" type="number" id="targetInp" value="51" min="10" max="500">
     </div>
     <div class="theme-row"><span class="tr-lbl">🎨 لون الثيم</span><div class="swatches" id="setupSwatches"></div></div>
-    
+    <button class="btn-arch" onclick="openArchive()">🏆 السجل التاريخي — الألعاب السابقة</button>
 <button class="btn-start" onclick="startGame()">🎲 ابدأ اللعبة</button>
   </div>
 </div>
@@ -501,6 +515,14 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   </div>
 </div>
 
+<!-- ══ ARCHIVE MODAL ══ -->
+<div class="overlay" id="mArch">
+  <div class="mbox" style="max-height:88vh">
+    <div class="mhdr"><div class="mtitle">🏆 السجل التاريخي — الألعاب السابقة</div><button class="mclose" onclick="closeM('mArch')">✕</button></div>
+    <div id="archBody" style="max-height:74vh;overflow-y:auto"></div>
+  </div>
+</div>
+
 <div class="notif" id="notif"></div>
 
 <!-- Watermark -->
@@ -528,6 +550,7 @@ let voiceRec = null;
 let uVoiceRec = null;
 let lastVoiceSnapshot = null;
 let ntTO = null;
+const LS_GAME='domino_game_v1', LS_ARCH='domino_archive_v1';
 
 // ═══════════════════════════
 // THEMES
@@ -539,7 +562,7 @@ const THEMES = {
   emerald: {name:'زمردي أخضر',  light:false, bg:'#04120c',s1:'#0a1a12',s2:'#0f241a',border:'#173a2a',text:'#eafff5',muted:'#5f8a76',tsub:'#a8ddc7',track:'#0e2c20', c1:'#34E39B', seats:['#34E39B','#FF6F91','#5FC8FF','#FFD25F']},
   maroon:  {name:'أبيض وعنابي', light:true,  bg:'#f5efec',s1:'#ffffff',s2:'#f4ebe7',border:'#e4d5cf',text:'#2a1216',muted:'#9a7d7d',tsub:'#6b5257',track:'#ecdcd6', c1:'#7E1F33', seats:['#7E1F33','#136E7A','#2E7D32','#9A6A00']},
 };
-let currentTheme = 'neon';
+let currentTheme = 'gold';
 function pcolor(i){ const t=THEMES[currentTheme]||THEMES.neon; return t.seats[i]; }
 function applyTheme(key){
   const t=THEMES[key]||THEMES.neon;
@@ -590,8 +613,10 @@ const selectedNames = ['','','',''];
     bg.appendChild(d);
   }
   buildPool();
-  let _st='neon'; try{_st=localStorage.getItem('domino_theme')||'neon';}catch(e){}
-  applyTheme(THEMES[_st]?_st:'neon');
+  let _st='gold'; try{_st=localStorage.getItem('domino_theme')||'gold';}catch(e){}
+  const _resumed = loadState();
+  applyTheme(THEMES[_st]?_st:'gold');
+  if(_resumed) showResumeNote();
   initSplash();
 })();
 
@@ -690,6 +715,75 @@ function refreshSlots(){
 // ═══════════════════════════
 // START
 // ═══════════════════════════
+// ═══════════════════════════
+// PERSISTENCE (auto-save & resume)
+// ═══════════════════════════
+function saveState(){
+  if(!players.length) return;
+  try{ localStorage.setItem(LS_GAME, JSON.stringify({players,round,history,TARGET})); }catch(e){}
+}
+function loadState(){
+  try{
+    const s=JSON.parse(localStorage.getItem(LS_GAME));
+    if(s && Array.isArray(s.players) && s.players.length){
+      players=s.players; round=s.round||1; history=s.history||[]; TARGET=s.TARGET||51;
+      return true;
+    }
+  }catch(e){}
+  return false;
+}
+function clearGame(){ try{ localStorage.removeItem(LS_GAME); }catch(e){} }
+function showResumeNote(){
+  const n=document.getElementById('resumeNote');
+  if(!n || !players.length) return;
+  const ldr=getLeader();
+  n.innerHTML=`▶️ لديك لعبة محفوظة (جولة ${round}) — المتصدر ${ldr.name} بـ ${ldr.score}<br><span style="font-size:.72rem;opacity:.7">اضغط للاستئناف</span>`;
+  n.style.display='block';
+}
+function resumeGame(){ showScreen('game'); renderGame(); requestWakeLock(); }
+
+// ═══════════════════════════
+// ARCHIVE (historical games log)
+// ═══════════════════════════
+function loadArchive(){ try{ const a=JSON.parse(localStorage.getItem(LS_ARCH)); return Array.isArray(a)?a:[]; }catch(e){ return []; } }
+function archiveGame(){
+  if(!players.length) return;
+  const sorted=[...players].sort((a,b)=>b.score-a.score);
+  const rec={ ts:Date.now(), target:TARGET, rounds:round-1, king:sorted[0]?sorted[0].name:'',
+    players:sorted.map(p=>({name:p.name,score:p.score})), hist:history };
+  const arr=loadArchive();
+  const key=JSON.stringify([rec.king,rec.rounds,rec.players]);
+  if(arr.length && JSON.stringify([arr[0].king,arr[0].rounds,arr[0].players])===key) return; // no duplicate
+  arr.unshift(rec);
+  if(arr.length>60) arr.length=60;
+  try{ localStorage.setItem(LS_ARCH, JSON.stringify(arr)); }catch(e){}
+}
+function openArchive(){
+  const arr=loadArchive();
+  const body=document.getElementById('archBody');
+  if(!arr.length){
+    body.innerHTML='<p style="text-align:center;color:var(--muted);padding:28px">لا توجد ألعاب محفوظة بعد — سيُحفظ كل نتيجة نهائية تلقائياً هنا</p>';
+    openM('mArch'); return;
+  }
+  const TT=['الكنج','صب كنج','صب كوز','الكوز'], MED=['👑','🥈','🥉','🤡'];
+  body.innerHTML=arr.map(g=>{
+    const d=new Date(g.ts);
+    let date; try{ date=d.toLocaleDateString('ar-EG',{year:'numeric',month:'long',day:'numeric'})+' · '+d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'}); }catch(e){ date=''; }
+    return `<div class="arch-card">
+      <div class="arch-hd"><span class="arch-king">👑 ${g.king}</span><span class="arch-date">${date}</span></div>
+      <div class="arch-meta">${g.rounds} جولة · حد ${g.target}</div>
+      ${g.players.map((p,i)=>`<div class="arch-row"><span>${MED[i]||''} ${p.name}</span><span class="arch-ttl">${TT[i]||''}</span><span class="arch-sc">${p.score}</span></div>`).join('')}
+    </div>`;
+  }).join('')+`<button class="btn-sec" onclick="clearArchive()" style="margin-top:6px;color:#FF5252;border-color:#FF525240">🗑️ مسح كل السجل التاريخي</button>`;
+  openM('mArch');
+}
+function clearArchive(){
+  if(!confirm('هل تريد مسح كل السجل التاريخي للألعاب السابقة؟')) return;
+  try{ localStorage.removeItem(LS_ARCH); }catch(e){}
+  openArchive();
+  notif('تم مسح السجل التاريخي','i');
+}
+
 function startGame(){
   const filled=selectedNames.filter(n=>n);
   const missing=4-filled.length;
@@ -703,6 +797,7 @@ function startGame(){
   showScreen('game');
   renderGame();
   requestWakeLock();
+  saveState();
   notif('🎲 بدأت اللعبة!','s');
 }
 
@@ -822,6 +917,7 @@ function applyAdd(pid, n){
   p.roundAdd += n;
   flash(pid, 'green');
   renderGame();
+  saveState();
   notif(`✅ ${p.name} +${n} → ${p.score}`,'s');
 }
 
@@ -923,6 +1019,7 @@ function applyEndRound(){
 
   closeM('mEnd');
   renderGame();
+  saveState();
 
   const ldr = getLeader();
   notif(`✅ جولة ${round-1} انتهت — ${ldr.name} يتصدر بـ ${ldr.score}`,'s');
@@ -1086,6 +1183,7 @@ function uVoiceStart(){
         if(val>0){ player.score+=val; player.roundAdd+=val; flash(player.id,'green'); }
       });
       renderGame();
+      saveState();
       sessionApplied=true;
       const summary=parsed.map(x=>`${x.player.name}+${x.val}`).join(' · ');
       vbSetStatus(`✅ ${summary} — استمر في التسجيل`,'#69FF47');
@@ -1127,6 +1225,7 @@ function uVoiceUndo(){
   });
   lastVoiceSnapshot=null;
   renderGame();
+  saveState();
   setVoiceBtn('Undo',false);
   vbSetStatus('↩️ تم التراجع عن جلسة الصوت','#FFD740');
 }
@@ -1226,7 +1325,7 @@ async function shareScore(withHistory=false){
   const brCols=['#FFD74050','#C0C0C040','#CD7F3240','#FF525240'];
   const now=new Date();
   const dateStr=now.toLocaleDateString('ar-SA-u-nu-latn',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  const dominoSVG=`<svg viewBox="0 0 84 44" fill="none" xmlns="http://www.w3.org/2000/svg" width="70" height="37"><rect x="1" y="1" width="82" height="42" rx="7" fill="#0c0c1a" stroke="#00E5FF" stroke-width="2.5"/><line x1="42" y1="6" x2="42" y2="38" stroke="#00E5FF" stroke-width="2" stroke-linecap="round"/><circle cx="20" cy="14" r="4" fill="#00E5FF"/><circle cx="28" cy="22" r="4" fill="#00E5FF"/><circle cx="20" cy="30" r="4" fill="#00E5FF"/><circle cx="54" cy="13" r="3.5" fill="#00E5FF"/><circle cx="63" cy="13" r="3.5" fill="#00E5FF"/><circle cx="54" cy="22" r="3.5" fill="#00E5FF"/><circle cx="63" cy="22" r="3.5" fill="#00E5FF"/><circle cx="54" cy="31" r="3.5" fill="#00E5FF"/><circle cx="63" cy="31" r="3.5" fill="#00E5FF"/></svg>`;
+  const dominoSVG=`<svg viewBox="0 0 130 115" width="86" height="76" xmlns="http://www.w3.org/2000/svg"><g transform="translate(42,62) rotate(-22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="#0c0c08" stroke="#F4C74A" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="#F4C74A" stroke-width="1.6"/><circle cx="0" cy="-16" r="3.2" fill="#F4C74A"/><circle cx="0" cy="16" r="3.2" fill="#F4C74A"/></g><g transform="translate(88,62) rotate(22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="#0c0c08" stroke="#F4C74A" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="#F4C74A" stroke-width="1.6"/><circle cx="-8" cy="-23" r="3" fill="#F4C74A"/><circle cx="0" cy="-16" r="3" fill="#F4C74A"/><circle cx="8" cy="-9" r="3" fill="#F4C74A"/><circle cx="-8" cy="9" r="3" fill="#F4C74A"/><circle cx="0" cy="16" r="3" fill="#F4C74A"/><circle cx="8" cy="23" r="3" fill="#F4C74A"/></g><g transform="translate(65,50)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="#0c0c08" stroke="#F4C74A" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="#F4C74A" stroke-width="1.6"/><circle cx="0" cy="-16" r="3.2" fill="#F4C74A"/><circle cx="-7" cy="10" r="3.2" fill="#F4C74A"/><circle cx="7" cy="20" r="3.2" fill="#F4C74A"/></g></svg>`;
 
   // Build history HTML separately to avoid nested template literal issues
   let histHTML = '';
@@ -1263,10 +1362,10 @@ async function shareScore(withHistory=false){
     <div style="text-align:center;margin-bottom:5px">${dominoSVG}</div>
     <div style="text-align:center;font-size:12px;color:#444;margin-bottom:2px">${dateStr}</div>
     <div style="text-align:center;font-size:10px;color:#2a2a3a;margin-bottom:14px">${round-1} جولة · حد النقاط: ${TARGET}</div>
-    <div style="text-align:center;background:${CS[leader.id]}18;border:1.5px solid ${CS[leader.id]}50;border-radius:14px;padding:13px;margin-bottom:11px">
+    <div style="text-align:center;background:#F4C74A18;border:1.5px solid #F4C74A50;border-radius:14px;padding:13px;margin-bottom:11px">
       <div style="font-size:30px;margin-bottom:3px">👑</div>
-      <div style="font-size:19px;font-weight:bold;color:${CS[leader.id]}">${leader.name}</div>
-      <div style="font-size:11px;color:${CS[leader.id]}90;margin-top:2px">الكنج · ${leader.score} نقطة</div>
+      <div style="font-size:19px;font-weight:bold;color:#F4C74A">${leader.name}</div>
+      <div style="font-size:11px;color:#F4C74A90;margin-top:2px">الكنج · ${leader.score} نقطة</div>
     </div>
     <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:12px">
       ${sorted.map((p,i)=>`
@@ -1311,6 +1410,7 @@ function resetScores(){
   players.forEach(p=>{ p.score=0; p.roundAdd=0; });
   round=1; history=[];
   closeM('mReset'); renderGame();
+  saveState();
   notif('🔁 تمت إعادة التعيين','i');
 }
 function fullReset(){
@@ -1322,6 +1422,8 @@ function fullReset(){
     if(btn) btn.classList.remove('used');
   });
   document.getElementById('targetInp').value='51';
+  clearGame();
+  document.getElementById('resumeNote').style.display='none';
   releaseWakeLock();
   showScreen('setup');
 }
@@ -1394,6 +1496,8 @@ function showResults(){
   if(b) b.style.display='none';
   showScreen('results');
   launchConfetti();
+  archiveGame();
+  clearGame();
 }
 
 function launchConfetti(){
