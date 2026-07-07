@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="دومينو">
+<title>🁣 دومينو</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130 115'%3E%3Cg fill='none' stroke='%2300E5FF' stroke-width='4'%3E%3Crect x='25' y='31' width='34' height='62' rx='8' transform='rotate(-22 42 62)' fill='%230c0c1a'/%3E%3Crect x='71' y='31' width='34' height='62' rx='8' transform='rotate(22 88 62)' fill='%230c0c1a'/%3E%3Crect x='48' y='19' width='34' height='62' rx='8' fill='%230c0c1a'/%3E%3C/g%3E%3Cg fill='%2300E5FF'%3E%3Ccircle cx='65' cy='34' r='4'/%3E%3Ccircle cx='58' cy='62' r='4'/%3E%3Ccircle cx='72' cy='70' r='4'/%3E%3C/g%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#07070f;--s1:#0c0c1a;--s2:#111128;--border:#1c1c30;
+  --c1:#00E5FF;--c2:#FF4081;--c3:#69FF47;--c4:#FFD740;
+  --text:#f0f0ff;--muted:#555;--font:'Cairo',sans-serif;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg)}
+body{font-family:var(--font);color:var(--text);direction:rtl;display:flex;flex-direction:column}
+input,button{font-family:var(--font)}
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* SCREENS */
+.screen{display:none;flex-direction:column;height:100vh;overflow:hidden}
+.screen.active{display:flex}
+
+/* BG */
+#bgTiles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.tile{position:absolute;font-size:1.8rem;opacity:.04;animation:floatTile 14s ease-in-out infinite}
+
+/* ══ SETUP ══ */
+#setup{justify-content:center;align-items:center;padding:20px;z-index:1;overflow-y:auto}
+.setup-box{width:100%;max-width:390px;display:flex;flex-direction:column;align-items:center}
+.big-logo{width:110px;height:96px;margin-bottom:12px;filter:drop-shadow(0 0 18px var(--c1));animation:glowPulse 2.5s ease-in-out infinite}
+.app-title{font-size:2.2rem;font-weight:900;letter-spacing:3px}
+.app-sub{color:var(--muted);font-size:.82rem;margin:5px 0 24px;text-align:center;line-height:1.6}
+.p-row{display:flex;align-items:center;gap:10px;width:100%;margin-bottom:11px}
+.pdot{width:13px;height:13px;border-radius:50%;flex-shrink:0}
+.inp{flex:1;padding:11px 15px;background:var(--s1);border:1.5px solid var(--border);border-radius:13px;color:var(--text);font-size:.93rem;outline:none;transition:border-color .2s}
+.target-row{display:flex;align-items:center;gap:12px;width:100%;margin:8px 0 20px;padding:12px 16px;background:var(--s1);border:1.5px solid var(--border);border-radius:13px}
+.target-row label{color:var(--muted);font-size:.84rem;flex:1;line-height:1.4}
+.target-inp{width:76px;padding:8px;background:var(--s2);border:1.5px solid #00E5FF40;border-radius:10px;color:var(--c1);font-size:1rem;font-weight:700;text-align:center;outline:none}
+.btn-start{width:100%;padding:14px;background:linear-gradient(135deg,#00E5FF1a,#00E5FF0d);border:1.5px solid #00E5FF50;border-radius:14px;color:var(--c1);font-size:1rem;font-weight:700;cursor:pointer;letter-spacing:.5px}
+.btn-start:active{transform:scale(.97)}
+.resume-note{width:100%;margin-bottom:14px;padding:11px 14px;background:#69FF470d;border:1.5px solid #69FF4740;border-radius:13px;color:var(--c3);font-size:.82rem;text-align:center;cursor:pointer;line-height:1.6;display:none}
+
+/* ══ GAME ══ */
+#game{z-index:1}
+.hdr{display:flex;justify-content:space-between;align-items:center;padding:12px 16px 8px;border-bottom:1px solid var(--border);flex-shrink:0}
+.round-pill{background:#00E5FF1a;border:1px solid #00E5FF40;color:var(--c1);padding:4px 13px;border-radius:20px;font-size:.75rem;font-weight:700}
+.hdr-mid{font-size:1.05rem;font-weight:900;letter-spacing:2px;display:flex;align-items:center;gap:5px}
+.leader-badge{font-size:.7rem;color:#888;text-align:left;max-width:110px;line-height:1.3}
+.leader-name{font-weight:700;font-size:.78rem}
+
+/* ── Player cards — FIXED ORDER ── */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:11px 12px 7px;flex:1;overflow:hidden}
+.pcard{background:var(--s1);border-radius:15px;padding:12px 11px;border:1.5px solid transparent;transition:border-color .3s,box-shadow .3s;display:flex;flex-direction:column;cursor:pointer;user-select:none;position:relative}
+.pcard:active{transform:scale(.95)}
+/* leader highlight — stays in original seat */
+.pcard.is-leader{box-shadow:0 0 0 1.5px var(--leader-color),0 0 18px var(--leader-color-dim)}
+.pcard-seat{font-size:.62rem;color:#444;margin-bottom:2px}
+.pcard-name{font-weight:700;font-size:.93rem}
+.pcard-pts{font-size:2.1rem;font-weight:900;font-family:monospace;line-height:1;margin:4px 0 2px}
+.pcard-radd{font-size:.7rem}
+.prog-bg{background:#141428;border-radius:4px;height:5px;margin-top:9px;overflow:hidden}
+.prog-fill{height:100%;border-radius:4px;transition:width .55s cubic-bezier(.4,0,.2,1)}
+.prog-lbl{font-size:.59rem;color:#444;margin-top:3px;text-align:left}
+.tap-hint{font-size:.58rem;color:#333;text-align:center;margin-top:5px}
+
+/* mode strip — PRIMARY next-round action */
+.mode-strip{display:flex;align-items:center;justify-content:space-between;margin:0 12px 5px;padding:9px 13px;border-radius:12px;border:1.5px solid;transition:all .3s;flex-shrink:0;background:#00E5FF0d;border-color:#00E5FF30;color:var(--c1)}
+.mode-label{font-size:.77rem;font-weight:700}
+.mode-hint{font-size:.66rem;opacity:.7;margin-top:1px}
+.mode-toggle{padding:9px 16px;border-radius:20px;border:none;background:linear-gradient(135deg,#69FF47,#3fd42a);color:#04120a;font-size:.82rem;font-weight:900;cursor:pointer;font-family:var(--font);white-space:nowrap;flex-shrink:0;box-shadow:0 3px 14px #69FF4740}
+.mode-toggle:active{transform:scale(.94)}
+
+/* actions */
+.actions{display:flex;gap:6px;padding:5px 10px 16px;flex-shrink:0}
+.abt{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 4px;background:transparent;border:1.5px solid;border-radius:12px;cursor:pointer;min-width:0}
+.abt:active{transform:scale(.9)}
+.abt:disabled{opacity:.35;cursor:default}
+.abt-icon{font-size:1.1rem}
+.abt-lbl{font-size:.57rem;color:#888;white-space:nowrap;font-family:var(--font)}
+
+/* voice strip */
+.vstrip{margin:-1px 12px 4px;padding:7px 13px;background:#69FF4710;border:1px solid #69FF4730;border-radius:10px;color:var(--c3);font-size:.75rem;display:none}
+.vstrip.show{display:block}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.blinking{animation:blink .7s infinite}
+
+/* ══ MODALS ══ */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:500;display:none;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex}
+.mbox{background:var(--s1);border:1px solid var(--border);border-radius:20px 20px 0 0;padding:20px 15px 28px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;animation:slideUp .26s ease}
+.mhdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.mtitle{font-size:.97rem;font-weight:700}
+.mclose{background:none;border:none;color:#555;font-size:1.15rem;cursor:pointer;padding:2px 8px}
+
+/* ── Quick add / ded sheet ── */
+.qa-player{text-align:center;margin-bottom:14px}
+.qa-pname{font-size:1.1rem;font-weight:700}
+.qa-info{font-size:.76rem;color:#666;margin-top:3px}
+/* grid of quick buttons */
+.qbtns{display:grid;gap:8px;margin-bottom:14px}
+.qbtns.add-grid{grid-template-columns:repeat(6,1fr)}
+.qbtns.ded-grid{grid-template-columns:repeat(4,1fr)}
+.qb{padding:11px 0;border-radius:11px;border:1.5px solid;font-weight:700;font-size:.95rem;cursor:pointer;font-family:var(--font);transition:transform .12s}
+.qb:active{transform:scale(.9)}
+.qb.add-btn{background:#00E5FF15;border-color:#00E5FF50;color:var(--c1)}
+.qb.ded-btn{background:#FF408115;border-color:#FF408150;color:var(--c2)}
+/* custom input row */
+.custom-row{display:flex;gap:8px;align-items:center}
+.custom-inp{flex:1;padding:10px 12px;background:var(--s2);border:1.5px solid var(--border);border-radius:11px;color:#fff;font-size:1rem;text-align:center;outline:none}
+.custom-inp.add-inp{border-color:#00E5FF40}
+.custom-inp.ded-inp{border-color:#FF408140;color:var(--c2)}
+.custom-btn{padding:10px 18px;border-radius:11px;border:1.5px solid;font-weight:700;font-size:.9rem;cursor:pointer;font-family:var(--font);white-space:nowrap}
+.custom-btn.add-cb{background:#00E5FF15;border-color:#00E5FF50;color:var(--c1)}
+.custom-btn.ded-cb{background:#FF408115;border-color:#FF408150;color:var(--c2)}
+.btn-sec{width:100%;padding:10px;margin-top:10px;background:var(--s2);border:1px solid var(--border);border-radius:12px;color:#666;font-size:.84rem;cursor:pointer;font-family:var(--font)}
+.btn-apply{width:100%;padding:13px;margin-top:12px;background:linear-gradient(135deg,#00E5FF1a,#00E5FF0d);border:1.5px solid #00E5FF50;border-radius:13px;color:var(--c1);font-size:.95rem;font-weight:700;cursor:pointer;font-family:var(--font)}
+
+/* end round panel */
+.er-note{text-align:center;color:#666;font-size:.77rem;margin-bottom:13px;padding:9px 12px;background:var(--s2);border-radius:10px;border:1px solid var(--border);line-height:1.6}
+.er-block{margin-bottom:16px;padding:12px;background:var(--s2);border-radius:13px;border:1.5px solid var(--border)}
+.er-phdr{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+.er-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.er-pname{font-weight:700;font-size:.9rem}
+.er-pscore{font-size:.72rem;color:#555;margin-right:auto}
+.er-qbtns{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}
+.er-qb{padding:9px 0;border-radius:10px;background:#FF408112;border:1.5px solid #FF408145;color:var(--c2);font-weight:700;font-size:.88rem;cursor:pointer;font-family:var(--font)}
+.er-qb:active{transform:scale(.9)}
+.er-qb.er-row2{grid-column:span 1}
+.er-custom{display:flex;gap:7px}
+.er-cinp{flex:1;padding:8px 10px;background:var(--bg);border:1.5px solid #FF408140;border-radius:10px;color:var(--c2);font-size:.9rem;text-align:center;outline:none;font-family:monospace}
+.er-cbtn{padding:8px 14px;background:#FF408112;border:1.5px solid #FF408145;border-radius:10px;color:var(--c2);font-weight:700;font-size:.85rem;cursor:pointer;font-family:var(--font)}
+.er-sel{font-size:.72rem;color:#FF4081;margin-top:5px;min-height:16px;font-weight:600}
+
+/* ranking */
+.rk-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border)}
+.rk-seat{font-size:.65rem;color:#444;width:14px;text-align:center;flex-shrink:0}
+.rk-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.rk-name{flex:1;font-weight:700;font-size:.92rem}
+.rk-pts{font-size:1.4rem;font-weight:900;font-family:monospace}
+.rk-crown{font-size:.75rem;margin-right:4px}
+
+/* history */
+.hr-round{margin-bottom:11px;padding:11px 12px;background:var(--bg);border-radius:11px;border:1px solid var(--border)}
+.hr-title{color:var(--c1);font-size:.75rem;font-weight:700;margin-bottom:7px}
+.hr-entry{display:flex;justify-content:space-between;font-size:.77rem;color:#bbb;margin-bottom:3px}
+.hr-sep{font-size:.67rem;color:#333;margin:5px 0 3px;font-weight:600}
+
+/* reset / confirm */
+.rst-txt{text-align:center;color:#aaa;margin-bottom:18px;line-height:1.7;font-size:.87rem}
+.btn-danger{width:100%;padding:13px;background:#FF52521a;border:1.5px solid #FF525250;border-radius:13px;color:#FF5252;font-size:.92rem;font-weight:700;cursor:pointer;font-family:var(--font)}
+
+/* voice help */
+.voice-help{padding:12px;background:var(--s2);border-radius:11px;border:1px solid var(--border);margin-bottom:12px;font-size:.8rem;color:#aaa;line-height:1.8}
+.voice-help strong{color:var(--c3)}
+.voice-status{padding:14px;text-align:center;border-radius:12px;border:1.5px solid var(--c3);background:#69FF4710;color:var(--c3);font-size:.88rem;font-weight:700;margin-bottom:12px}
+.voice-result{padding:12px;background:var(--s2);border-radius:11px;border:1px solid var(--border);font-size:.82rem;color:#ccc;min-height:40px;margin-bottom:12px;line-height:1.6}
+
+/* ══ RESULTS ══ */
+#results{justify-content:center;align-items:center;padding:24px 18px;z-index:1;overflow-y:auto}
+.trophy{font-size:3.8rem;animation:bounce .9s ease infinite;margin-bottom:8px}
+.res-title{font-size:1.8rem;font-weight:900;color:var(--c4);margin-bottom:4px}
+.res-sub{color:#888;font-size:.84rem;margin-bottom:22px;text-align:center;line-height:1.6}
+.res-list{width:100%;max-width:390px;display:flex;flex-direction:column;gap:9px;margin-bottom:22px}
+.res-row{display:flex;align-items:center;gap:13px;padding:13px 16px;background:var(--s1);border:1.5px solid var(--border);border-radius:13px}
+.res-row.winner-row{border-color:var(--c4);background:#FFD74010}
+.res-row.loser-row{border-color:#FF525240}
+.res-med{font-size:1.5rem}
+.res-name{flex:1;font-weight:700;font-size:.97rem}
+.res-tag{font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:20px}
+.res-pts{font-size:1.55rem;font-weight:900;font-family:monospace}
+.btn-new{width:100%;max-width:390px;padding:14px;background:linear-gradient(135deg,#00E5FF1a,#00E5FF0d);border:1.5px solid #00E5FF50;border-radius:14px;color:var(--c1);font-size:1rem;font-weight:700;cursor:pointer;font-family:var(--font)}
+
+/* notif */
+.notif{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);padding:9px 20px;border-radius:22px;font-size:.77rem;font-weight:600;z-index:9999;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis;pointer-events:none;display:none;background:var(--s1)}
+.notif.s{border:1.5px solid var(--c3);color:var(--c3)}
+.notif.e{border:1.5px solid #FF5252;color:#FF5252}
+.notif.i{border:1.5px solid var(--c1);color:var(--c1)}
+
+@keyframes floatTile{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-20px) rotate(10deg)}}
+@keyframes glowPulse{0%,100%{filter:drop-shadow(0 0 18px var(--c1))}50%{filter:drop-shadow(0 0 36px var(--c1))}}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes slideDown{from{transform:translateY(-100%)}to{transform:translateY(0)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-13px)}}
+@keyframes notifIn{from{transform:translateX(-50%) translateY(12px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
+</style>
+</head>
+<body>
+
+<div id="bgTiles"></div>
+
+<!-- ══ SETUP ══ -->
+<div class="screen active" id="setup">
+  <div class="setup-box">
+    <div class="big-logo">
+      <svg viewBox="0 0 130 115" fill="none" xmlns="http://www.w3.org/2000/svg" width="110" height="96" style="color:#00E5FF">
+        <!-- LEFT tile -->
+        <g transform="translate(42,62) rotate(-22)">
+          <rect x="-17" y="-31" width="34" height="62" rx="8" fill="#0c0c1a" stroke="currentColor" stroke-width="2.5"/>
+          <line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <circle cx="0" cy="-16" r="3.2" fill="currentColor"/>
+          <circle cx="0" cy="16" r="3.2" fill="currentColor"/>
+        </g>
+        <!-- RIGHT tile -->
+        <g transform="translate(88,62) rotate(22)">
+          <rect x="-17" y="-31" width="34" height="62" rx="8" fill="#0c0c1a" stroke="currentColor" stroke-width="2.5"/>
+          <line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <circle cx="-8" cy="-23" r="3" fill="currentColor"/>
+          <circle cx="0" cy="-16" r="3" fill="currentColor"/>
+          <circle cx="8" cy="-9" r="3" fill="currentColor"/>
+          <circle cx="-8" cy="9" r="3" fill="currentColor"/>
+          <circle cx="0" cy="16" r="3" fill="currentColor"/>
+          <circle cx="8" cy="23" r="3" fill="currentColor"/>
+        </g>
+        <!-- CENTER tile (front) -->
+        <g transform="translate(65,50)">
+          <rect x="-17" y="-31" width="34" height="62" rx="8" fill="#0c0c1a" stroke="currentColor" stroke-width="2.5"/>
+          <line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <circle cx="0" cy="-16" r="3.2" fill="currentColor"/>
+          <circle cx="-7" cy="10" r="3.2" fill="currentColor"/>
+          <circle cx="7" cy="20" r="3.2" fill="currentColor"/>
+        </g>
+      </svg>
+    </div>
+    <div class="app-title">دومينو</div>
+    <div class="app-sub">أدخل الأسماء <strong style="color:var(--c1)">بترتيب الجلوس</strong><br>الترتيب لن يتغير أثناء اللعب</div>
+    <div class="resume-note" id="resumeNote" onclick="resumeGame()"></div>
+    <div id="pInputs"></div>
+    <div class="target-row">
+      <label>🏁 حد النقاط<br><span style="font-size:.72rem">الخروج عند بلوغه</span></label>
+      <input class="target-inp" type="number" id="targetInp" value="51" min="10" max="500">
+    </div>
+    <button class="btn-start" onclick="startGame()">🎲 ابدأ اللعبة</button>
+  </div>
+</div>
+
+<!-- ══ GAME ══ -->
+<div class="screen" id="game">
+  <div class="hdr">
+    <span class="round-pill" id="roundPill">جولة 1</span>
+    <div class="hdr-mid">
+      <svg viewBox="0 0 130 115" fill="none" xmlns="http://www.w3.org/2000/svg" width="30" height="26" style="color:#00E5FF;vertical-align:middle">
+        <g transform="translate(42,62) rotate(-22)">
+          <rect x="-17" y="-31" width="34" height="62" rx="8" fill="#0c0c1a" stroke="currentColor" stroke-width="3"/>
+          <line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="0" cy="-16" r="4" fill="currentColor"/><circle cx="0" cy="16" r="4" fill="currentColor"/>
+        </g>
+        <g transform="translate(88,62) rotate(22)">
+          <rect x="-17" y="-31" width="34" height="62" rx="8" fill="#0c0c1a" stroke="currentColor" stroke-width="3"/>
+          <line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="0" cy="-16" r="4" fill="currentColor"/><circle cx="-8" cy="12" r="4" fill="currentColor"/><circle cx="8" cy="20" r="4" fill="currentColor"/>
+        </g>
+        <g transform="translate(65,50)">
+          <rect x="-17" y="-31" width="34" height="62" rx="8" fill="#0c0c1a" stroke="currentColor" stroke-width="3"/>
+          <line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="0" cy="-16" r="4" fill="currentColor"/><circle cx="0" cy="16" r="4" fill="currentColor"/>
+        </g>
+      </svg>
+      دومينو
+    </div>
+    <div class="leader-badge">
+      <div style="color:#555;font-size:.62rem">المتصدر</div>
+      <div class="leader-name" id="leaderName">—</div>
+      <div id="leaderPts" style="font-size:.65rem;color:#666"></div>
+    </div>
+  </div>
+  <div class="cards" id="cardsGrid"></div>
+  <div class="mode-strip" id="modeStrip">
+    <div>
+      <div class="mode-label">🟢 أثناء الجولة</div>
+      <div class="mode-hint">اضغط على لاعب لتسجيل نقاطه</div>
+    </div>
+    <button class="mode-toggle" onclick="openEndModal()">إنهاء الجولة والانتقال للتالية ←</button>
+  </div>
+  <div class="vstrip" id="vstrip"></div>
+  <div class="actions" id="actBar"></div>
+</div>
+
+<!-- ══ RESULTS ══ -->
+<div class="screen" id="results">
+  <div class="trophy">🏆</div>
+  <div style="margin-bottom:8px">
+    <svg viewBox="0 0 130 115" fill="none" xmlns="http://www.w3.org/2000/svg" width="92" height="80" style="color:#FFD740">
+      <g transform="translate(42,62) rotate(-22)">
+        <rect x="-17" y="-31" width="34" height="62" rx="8" fill="#0c0c1a" stroke="currentColor" stroke-width="2.5"/>
+        <line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="0" cy="-16" r="3.2" fill="currentColor"/><circle cx="0" cy="16" r="3.2" fill="currentColor"/>
+      </g>
+      <g transform="translate(88,62) rotate(22)">
+        <rect x="-17" y="-31" width="34" height="62" rx="8" fill="#0c0c1a" stroke="currentColor" stroke-width="2.5"/>
+        <line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="-8" cy="-23" r="3" fill="currentColor"/><circle cx="0" cy="-16" r="3" fill="currentColor"/><circle cx="8" cy="-9" r="3" fill="currentColor"/>
+        <circle cx="-8" cy="9" r="3" fill="currentColor"/><circle cx="0" cy="16" r="3" fill="currentColor"/><circle cx="8" cy="23" r="3" fill="currentColor"/>
+      </g>
+      <g transform="translate(65,50)">
+        <rect x="-17" y="-31" width="34" height="62" rx="8" fill="#0c0c1a" stroke="currentColor" stroke-width="2.5"/>
+        <line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="0" cy="-16" r="3.2" fill="currentColor"/><circle cx="-7" cy="10" r="3.2" fill="currentColor"/><circle cx="7" cy="20" r="3.2" fill="currentColor"/>
+      </g>
+    </svg>
+  </div>
+  <div class="res-title">انتهت اللعبة!</div>
+  <div class="res-sub" id="resSub"></div>
+  <div class="res-list" id="resList"></div>
+  <button class="btn-new" onclick="fullReset()">🔁 لعبة جديدة</button>
+</div>
+
+<!-- ══ QUICK ADD MODAL ══ -->
+<div class="overlay" id="mAdd">
+  <div class="mbox">
+    <div class="mhdr">
+      <div class="mtitle">➕ تسجيل نقاط</div>
+      <button class="mclose" onclick="closeM('mAdd')">✕</button>
+    </div>
+    <div class="qa-player">
+      <div class="qa-pname" id="addPname"></div>
+      <div class="qa-info" id="addPinfo"></div>
+    </div>
+    <!-- quick buttons 1-6 -->
+    <div class="qbtns add-grid" id="addQbtns"></div>
+    <!-- custom -->
+    <div class="custom-row">
+      <input type="number" min="1" class="custom-inp add-inp" id="addCustomInp" placeholder="قيمة أخرى...">
+      <button class="custom-btn add-cb" onclick="doCustomAdd()">إضافة ✓</button>
+    </div>
+    <button class="btn-sec" id="addCorrectBtn" onclick="openCorrect()">✏️ تصحيح / تعديل نقاط هذا اللاعب</button>
+    <button class="btn-sec" onclick="closeM('mAdd')">إلغاء</button>
+  </div>
+</div>
+
+<!-- ══ CORRECT / EDIT MODAL ══ -->
+<div class="overlay" id="mCorrect">
+  <div class="mbox">
+    <div class="mhdr">
+      <div class="mtitle">✏️ تصحيح النقاط</div>
+      <button class="mclose" onclick="closeM('mCorrect')">✕</button>
+    </div>
+    <div class="qa-player">
+      <div class="qa-pname" id="corPname"></div>
+      <div class="qa-info">اضبط النقاط الإجمالية للاعب مباشرةً</div>
+    </div>
+    <div class="custom-row">
+      <input type="number" min="0" class="custom-inp add-inp" id="corInp" placeholder="النقاط الصحيحة">
+      <button class="custom-btn add-cb" onclick="applyCorrect()">حفظ ✓</button>
+    </div>
+    <button class="btn-sec" onclick="closeM('mCorrect')">إلغاء</button>
+  </div>
+</div>
+
+<!-- ══ END ROUND MODAL ══ -->
+<div class="overlay" id="mEnd">
+  <div class="mbox">
+    <div class="mhdr">
+      <div class="mtitle">🏁 إنهاء الجولة — الخصومات</div>
+      <button class="mclose" onclick="closeM('mEnd')">✕</button>
+    </div>
+    <div class="er-note">
+      اختر الخصم لكل خاسر · اتركه صفراً إن لم يُخصم منه
+    </div>
+    <div id="endPanel"></div>
+    <button class="btn-apply" onclick="applyEndRound()">✅ تأكيد وبدء الجولة التالية</button>
+    <button class="btn-sec" onclick="closeM('mEnd')">إلغاء — الجولة لم تنته بعد</button>
+  </div>
+</div>
+
+<!-- ══ END GAME CONFIRM MODAL ══ -->
+<div class="overlay" id="mEndGame">
+  <div class="mbox">
+    <div class="mhdr"><div class="mtitle">🏁 إنهاء اللعبة كاملة</div><button class="mclose" onclick="closeM('mEndGame')">✕</button></div>
+    <p class="rst-txt">هل تريد <strong style="color:#FF5252">إنهاء اللعبة الآن</strong> وعرض النتائج النهائية؟<br>هذا يُنهي كل الجولات — لن تُكمل اللعب.</p>
+    <button class="btn-danger" onclick="confirmEndGame()">نعم، أنهِ اللعبة واعرض النتائج</button>
+    <button class="btn-sec" onclick="closeM('mEndGame')">إلغاء — تابع اللعب</button>
+  </div>
+</div>
+
+<!-- ══ RANKING MODAL ══ -->
+<div class="overlay" id="mRank">
+  <div class="mbox">
+    <div class="mhdr"><div class="mtitle">📊 الترتيب الحالي</div><button class="mclose" onclick="closeM('mRank')">✕</button></div>
+    <div id="rankBody"></div>
+  </div>
+</div>
+
+<!-- ══ HISTORY MODAL ══ -->
+<div class="overlay" id="mHist">
+  <div class="mbox">
+    <div class="mhdr"><div class="mtitle">🧾 سجل الجولات</div><button class="mclose" onclick="closeM('mHist')">✕</button></div>
+    <div id="histBody" style="max-height:350px;overflow-y:auto"></div>
+  </div>
+</div>
+
+<!-- ══ VOICE MODAL ══ -->
+<div class="overlay" id="mVoice">
+  <div class="mbox">
+    <div class="mhdr"><div class="mtitle">🎙️ الإدخال الصوتي</div><button class="mclose" onclick="stopVoice()">✕</button></div>
+    <div class="voice-help">
+      <strong>طريقة الاستخدام:</strong><br>
+      قل اسم اللاعب ثم الرقم مثلاً:<br>
+      <strong>"أحمد ٣ محمد ٥"</strong><br>
+      أو <strong>"خالد خمسة علي ثلاثة"</strong>
+    </div>
+    <div class="voice-status" id="voiceStatus">اضغط للبدء</div>
+    <div class="voice-result" id="voiceResult">سيظهر هنا ما تم التعرف عليه...</div>
+    <button class="btn-apply" id="voiceStartBtn" onclick="voiceStart()">🎙️ ابدأ التسمع</button>
+    <button class="btn-sec" onclick="stopVoice()">إغلاق</button>
+  </div>
+</div>
+
+<!-- ══ RESET MODAL ══ -->
+<div class="overlay" id="mReset">
+  <div class="mbox">
+    <div class="mhdr"><div class="mtitle">🔁 إعادة التعيين</div><button class="mclose" onclick="closeM('mReset')">✕</button></div>
+    <p class="rst-txt">إعادة نقاط جميع اللاعبين إلى الصفر وحذف سجل الجولات؟</p>
+    <button class="btn-danger" onclick="resetScores()">نعم، أعد التعيين</button>
+    <button class="btn-sec" onclick="closeM('mReset')">إلغاء</button>
+  </div>
+</div>
+
+<div class="notif" id="notif"></div>
+
+<script>
+// ═══════════════════════════
+// STATE
+// ═══════════════════════════
+const COLORS = ['#00E5FF','#FF4081','#69FF47','#FFD740'];
+const EMOJIS = ['⚀⚅','⚃⚂','⚁⚄','⚅⚀','⚂⚃'];
+const SEAT_LABELS = ['مقعد ١','مقعد ٢','مقعد ٣','مقعد ٤'];
+const ADD_VALS  = [1,2,3,4,5,6];
+const DED_VALS  = [1,2,3,4,5,6,7];
+const LS_KEY    = 'domino_state_v2';
+
+let players = [];   // fixed order by seat — NEVER sorted
+let round   = 1;
+let history = [];
+let TARGET  = 51;
+let activePid = null;   // which player is open in quick-add
+let dedSelections = {}; // pid → selected deduction amount
+let undoStack = [];     // stack of {pid, n} for in-round point additions
+let voiceRec = null;
+let ntTO = null;
+
+// ═══════════════════════════
+// PERSISTENCE (localStorage)
+// ═══════════════════════════
+function saveState(){
+  if(!players.length) return;
+  try{
+    localStorage.setItem(LS_KEY, JSON.stringify({players,round,history,TARGET,undoStack}));
+  }catch(e){}
+}
+function loadState(){
+  try{
+    const s = JSON.parse(localStorage.getItem(LS_KEY));
+    if(s && Array.isArray(s.players) && s.players.length){
+      players   = s.players;
+      round     = s.round   || 1;
+      history   = s.history || [];
+      TARGET    = s.TARGET  || 51;
+      undoStack = s.undoStack || [];
+      return true;
+    }
+  }catch(e){}
+  return false;
+}
+function clearState(){ try{ localStorage.removeItem(LS_KEY); }catch(e){} }
+
+// escape user text before injecting into innerHTML
+function esc(str){
+  return String(str).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ═══════════════════════════
+// INIT
+// ═══════════════════════════
+(function(){
+  // bg tiles
+  const bg = document.getElementById('bgTiles');
+  for(let i=0;i<10;i++){
+    const d = document.createElement('div');
+    d.className = 'tile';
+    d.textContent = EMOJIS[i % EMOJIS.length];
+    d.style.cssText = `top:${6+i*9}%;left:${2+i*10}%;animation-delay:${i*1.5}s;animation-duration:${12+i*1.4}s`;
+    bg.appendChild(d);
+  }
+  // player inputs
+  const box = document.getElementById('pInputs');
+  for(let i=0;i<4;i++){
+    box.innerHTML += `
+    <div class="p-row">
+      <div class="pdot" style="background:${COLORS[i]};box-shadow:0 0 8px ${COLORS[i]}60"></div>
+      <input class="inp" id="pn${i}" placeholder="اللاعب ${i+1} — ${SEAT_LABELS[i]}"
+        onfocus="this.style.borderColor='${COLORS[i]}'"
+        onblur="this.style.borderColor='var(--border)'">
+    </div>`;
+  }
+  // offer to resume a saved game
+  if(loadState()){
+    const note = document.getElementById('resumeNote');
+    const ldr  = getLeader();
+    note.innerHTML = `▶️ لديك لعبة محفوظة (جولة ${round}) — المتصدر ${esc(ldr.name)} بـ ${ldr.score}<br><span style="font-size:.72rem;color:#69FF4799">اضغط هنا لاستئنافها</span>`;
+    note.style.display = 'block';
+  }
+})();
+
+function resumeGame(){
+  showScreen('game');
+  renderGame();
+  notif('▶️ تم استئناف اللعبة','s');
+}
+
+// ═══════════════════════════
+// START
+// ═══════════════════════════
+function startGame(){
+  const names = [0,1,2,3].map(i => document.getElementById('pn'+i).value.trim());
+  if(names.some(n=>!n)){ notif('يرجى إدخال أسماء جميع اللاعبين','e'); return; }
+  TARGET  = parseInt(document.getElementById('targetInp').value) || 51;
+  // players array is FIXED — index = seat, never changes
+  players = names.map((name,i) => ({ id:i, name, score:0, color:COLORS[i], roundAdd:0 }));
+  round = 1; history = []; undoStack = [];
+  saveState();
+  showScreen('game');
+  renderGame();
+  notif('🎲 بدأت اللعبة!','s');
+}
+
+// ═══════════════════════════
+// RENDER (fixed seat order)
+// ═══════════════════════════
+function getLeader(){
+  return [...players].sort((a,b)=>b.score-a.score)[0];
+}
+
+function renderGame(){
+  const leader = getLeader();
+  document.getElementById('roundPill').textContent  = `جولة ${round}`;
+  document.getElementById('leaderName').textContent = leader.name;
+  document.getElementById('leaderPts').textContent  = leader.score + ' نقطة';
+  document.getElementById('leaderName').style.color = leader.color;
+
+  // cards — ALWAYS in original seat order (players[0..3])
+  const grid = document.getElementById('cardsGrid');
+  grid.innerHTML = '';
+  players.forEach((p) => {
+    const pct     = Math.min((p.score / TARGET) * 100, 100);
+    const isLead  = (p.id === leader.id);
+    const d       = document.createElement('div');
+    d.className   = 'pcard' + (isLead ? ' is-leader' : '');
+    d.id          = 'card' + p.id;
+    if(isLead){
+      d.style.setProperty('--leader-color', p.color);
+      d.style.setProperty('--leader-color-dim', p.color + '40');
+    }
+    d.style.borderColor = p.color + (isLead ? 'CC' : '25');
+    d.onclick = () => openAddModal(p.id);
+    d.innerHTML = `
+      <div class="pcard-seat">${SEAT_LABELS[p.id]}${isLead ? ' 👑' : ''}</div>
+      <div class="pcard-name">${esc(p.name)}</div>
+      <div class="pcard-pts" style="color:${p.color}">${p.score}</div>
+      <div class="pcard-radd" style="color:${p.color}70">+${p.roundAdd} هذه الجولة</div>
+      <div class="prog-bg">
+        <div class="prog-fill" style="width:${pct}%;background:linear-gradient(90deg,${p.color}60,${p.color})"></div>
+      </div>
+      <div class="prog-lbl">${p.score} / ${TARGET}</div>
+      <div class="tap-hint" style="color:${p.color}40">اضغط لتسجيل نقاط</div>`;
+    grid.appendChild(d);
+  });
+
+  // action bar — undo is enabled only when there is something to undo
+  const canUndo = undoStack.length > 0;
+  const acts = [
+    {icon:'↩️',lbl:'تراجع', color:'#00E5FF',fn:"undoLast()", disabled:!canUndo},
+    {icon:'📊',lbl:'الترتيب',color:'#FF4081',fn:"openRanking()"},
+    {icon:'🎙️',lbl:'صوتي',  color:'#69FF47',fn:"openVoiceModal()"},
+    {icon:'🧾',lbl:'السجل',  color:'#FFD740',fn:"openHistory()"},
+    {icon:'🔁',lbl:'إعادة',  color:'#FF9100',fn:"openM('mReset')"},
+    {icon:'🏁',lbl:'إنهاء اللعبة', color:'#FF5252',fn:"openM('mEndGame')"},
+  ];
+  document.getElementById('actBar').innerHTML = acts.map(a=>`
+    <button class="abt" onclick="${a.fn}" ${a.disabled?'disabled':''} style="border-color:${a.color}40;background:${a.color}10;color:${a.color}">
+      <span class="abt-icon">${a.icon}</span>
+      <span class="abt-lbl">${a.lbl}</span>
+    </button>`).join('');
+}
+
+// ═══════════════════════════
+// QUICK ADD MODAL
+// ═══════════════════════════
+function openAddModal(pid){
+  activePid = pid;
+  const p = players[pid];
+  document.getElementById('addPname').textContent = p.name;
+  document.getElementById('addPname').style.color = p.color;
+  document.getElementById('addPinfo').textContent =
+    `النقاط الحالية: ${p.score} | هذه الجولة: +${p.roundAdd}`;
+  document.getElementById('addCustomInp').value = '';
+
+  // build quick buttons 1-6
+  const grid = document.getElementById('addQbtns');
+  grid.innerHTML = ADD_VALS.map(v =>
+    `<button class="qb add-btn" onclick="doQuickAdd(${v})">+${v}</button>`
+  ).join('');
+
+  openM('mAdd');
+}
+
+function doQuickAdd(val){
+  applyAdd(activePid, val);
+  closeM('mAdd');
+}
+
+function doCustomAdd(){
+  const v = parseInt(document.getElementById('addCustomInp').value);
+  if(!v || v <= 0){ notif('أدخل قيمة صحيحة','e'); return; }
+  applyAdd(activePid, v);
+  closeM('mAdd');
+}
+
+function applyAdd(pid, n){
+  const p = players[pid];
+  p.score    += n;
+  p.roundAdd += n;
+  undoStack.push({pid, n});     // remember for undo
+  flash(pid, 'green');
+  saveState();
+  renderGame();
+  notif(`✅ ${p.name} +${n} → ${p.score}`,'s');
+}
+
+// undo the last in-round point addition (fixes accidental taps)
+function undoLast(){
+  const last = undoStack.pop();
+  if(!last){ notif('لا يوجد ما يمكن التراجع عنه','i'); return; }
+  const p = players[last.pid];
+  p.score    = Math.max(0, p.score - last.n);
+  p.roundAdd = Math.max(0, p.roundAdd - last.n);
+  flash(last.pid, 'red');
+  saveState();
+  renderGame();
+  notif(`↩️ تراجع: ${p.name} -${last.n} → ${p.score}`,'i');
+}
+
+// ── correct / edit a player's total directly ──
+function openCorrect(){
+  const p = players[activePid];
+  document.getElementById('corPname').textContent = p.name;
+  document.getElementById('corPname').style.color = p.color;
+  document.getElementById('corInp').value = p.score;
+  closeM('mAdd');
+  openM('mCorrect');
+}
+function applyCorrect(){
+  const v = parseInt(document.getElementById('corInp').value);
+  if(isNaN(v) || v < 0){ notif('أدخل قيمة صحيحة','e'); return; }
+  const p = players[activePid];
+  const diff = v - p.score;
+  p.score = v;
+  p.roundAdd = Math.max(0, p.roundAdd + diff);
+  undoStack = [];               // manual edit breaks the simple undo chain
+  flash(activePid, diff>=0?'green':'red');
+  saveState();
+  renderGame();
+  closeM('mCorrect');
+  notif(`✏️ تم ضبط نقاط ${p.name} إلى ${v}`,'s');
+}
+
+// ═══════════════════════════
+// END ROUND — DEDUCTIONS
+// ═══════════════════════════
+function openEndModal(){
+  dedSelections = {};
+  players.forEach(p => dedSelections[p.id] = 0);
+
+  const panel = document.getElementById('endPanel');
+  panel.innerHTML = players.map(p => `
+    <div class="er-block" id="erblock${p.id}">
+      <div class="er-phdr">
+        <div class="er-dot" style="background:${p.color}"></div>
+        <div class="er-pname">${esc(p.name)}</div>
+        <div class="er-pscore">نقاط: ${p.score} | +${p.roundAdd} هذه الجولة</div>
+      </div>
+      <!-- quick ded buttons 1-7 in two rows of 4 -->
+      <div class="er-qbtns" id="dedbtns${p.id}">
+        ${DED_VALS.map(v =>
+          `<button class="er-qb" id="db${p.id}_${v}" onclick="selectDed(${p.id},${v})">-${v}</button>`
+        ).join('')}
+        <button class="er-qb" id="db${p.id}_0"
+          style="background:#69FF4712;border-color:#69FF4740;color:var(--c3)"
+          onclick="selectDed(${p.id},0)">لا خصم</button>
+      </div>
+      <!-- custom deduction -->
+      <div class="er-custom">
+        <input type="number" min="1" class="er-cinp" id="ercinp${p.id}" placeholder="خصم مخصص...">
+        <button class="er-cbtn" onclick="applyCustomDed(${p.id})">تطبيق</button>
+      </div>
+      <div class="er-sel" id="ersel${p.id}">لا خصم محدد بعد</div>
+    </div>`).join('');
+
+  openM('mEnd');
+}
+
+function selectDed(pid, val){
+  dedSelections[pid] = val;
+  // highlight selected button
+  DED_VALS.concat([0]).forEach(v => {
+    const btn = document.getElementById(`db${pid}_${v}`);
+    if(!btn) return;
+    if(v === val){
+      btn.style.background = v === 0 ? '#69FF4730' : '#FF408130';
+      btn.style.borderColor= v === 0 ? '#69FF47'   : '#FF4081';
+      btn.style.fontWeight = '900';
+    } else {
+      btn.style.background = v === 0 ? '#69FF4712' : '#FF408112';
+      btn.style.borderColor= v === 0 ? '#69FF4740' : '#FF408145';
+      btn.style.fontWeight = '700';
+    }
+  });
+  // clear custom input
+  document.getElementById('ercinp'+pid).value = '';
+  // update label
+  const lbl = document.getElementById('ersel'+pid);
+  lbl.textContent = val === 0 ? '✅ لا خصم' : `❌ خصم محدد: ${val} نقطة`;
+  lbl.style.color = val === 0 ? 'var(--c3)' : 'var(--c2)';
+}
+
+function applyCustomDed(pid){
+  const v = parseInt(document.getElementById('ercinp'+pid).value);
+  if(!v || v <= 0){ notif('أدخل قيمة خصم صحيحة','e'); return; }
+  dedSelections[pid] = v;
+  // un-highlight all quick buttons
+  DED_VALS.concat([0]).forEach(dv => {
+    const btn = document.getElementById(`db${pid}_${dv}`);
+    if(btn){
+      btn.style.background  = dv===0?'#69FF4712':'#FF408112';
+      btn.style.borderColor = dv===0?'#69FF4740':'#FF408145';
+      btn.style.fontWeight  = '700';
+    }
+  });
+  const lbl = document.getElementById('ersel'+pid);
+  lbl.textContent = `❌ خصم مخصص: ${v} نقطة`;
+  lbl.style.color = 'var(--c2)';
+  notif(`تم تحديد خصم ${v} على ${players[pid].name}`,'i');
+}
+
+function applyEndRound(){
+  // build history record BEFORE applying deductions
+  const rec = {
+    round,
+    adds  : players.filter(p=>p.roundAdd>0).map(p=>({name:p.name,add:p.roundAdd,color:p.color})),
+    deds  : [],
+    totals: {}
+  };
+
+  // apply deductions
+  players.forEach(p => {
+    const ded = dedSelections[p.id] || 0;
+    if(ded > 0){
+      p.score = Math.max(0, p.score - ded);
+      rec.deds.push({ name:p.name, ded, color:p.color });
+      flash(p.id, 'red');
+    }
+    rec.totals[p.name] = p.score;
+    p.roundAdd = 0;
+  });
+
+  history.push(rec);
+  round++;
+  undoStack = [];   // new round — clear in-round undo history
+  saveState();
+
+  closeM('mEnd');
+  renderGame();
+
+  const ldr = getLeader();
+  notif(`✅ جولة ${round-1} انتهت — ${ldr.name} يتصدر بـ ${ldr.score}`,'s');
+
+  // Win check: at least one player >= TARGET
+  // AND the top score is held by exactly ONE player (no tie at the top)
+  const maxScore   = Math.max(...players.map(p => p.score));
+  const aboveLimit = players.filter(p => p.score >= TARGET);
+  const topTied    = players.filter(p => p.score === maxScore);
+
+  if(aboveLimit.length > 0){
+    if(topTied.length === 1){
+      // Clear result — end game
+      setTimeout(()=>showResults(), 900);
+    } else {
+      // Tied at top — continue with extra round notice
+      const tiedNames = topTied.map(p=>p.name).join(' و ');
+      notif(`⚡ تعادل! ${tiedNames} — تستمر اللعبة`, 'i');
+      showTieBanner(topTied);
+    }
+  }
+}
+
+// ═══════════════════════════
+// TIE BANNER
+// ═══════════════════════════
+function showTieBanner(tiedPlayers){
+  let banner = document.getElementById('tieBanner');
+  if(!banner){
+    banner = document.createElement('div');
+    banner.id = 'tieBanner';
+    banner.style.cssText = `
+      position:fixed;top:0;left:0;right:0;z-index:800;
+      padding:12px 18px;text-align:center;font-weight:700;font-size:.88rem;
+      background:linear-gradient(135deg,#FF408120,#FFD74020);
+      border-bottom:1.5px solid #FFD74060;color:var(--c4);
+      animation:slideDown .4s ease;font-family:var(--font);
+      direction:rtl;`;
+    document.body.appendChild(banner);
+  }
+  const names = tiedPlayers.map(p=>`<span style="color:${p.color}">${esc(p.name)}</span>`).join(' و ');
+  banner.innerHTML = `⚡ تعادل! ${names} — جولة إضافية لكسر التعادل`;
+  banner.style.display = 'block';
+  setTimeout(()=>{ banner.style.display='none'; }, 4000);
+}
+
+// ═══════════════════════════
+// END GAME (manual) — with confirmation
+// ═══════════════════════════
+function confirmEndGame(){
+  closeM('mEndGame');
+  showResults();
+}
+
+// ═══════════════════════════
+// VOICE — Arabic number parsing
+// ═══════════════════════════
+const ARABIC_NUMS = {
+  'صفر':0,'واحد':1,'واحده':1,'اثنين':2,'اثنان':2,'ثلاثة':3,'ثلاثه':3,
+  'أربعة':4,'اربعة':4,'أربعه':4,'خمسة':5,'خمسه':5,'ستة':6,'سته':6,
+  'سبعة':7,'سبعه':7,'ثمانية':8,'ثمانيه':8,'تسعة':9,'تسعه':9,'عشرة':10,'عشره':10,
+  'أحد عشر':11,'اثنا عشر':12,'ثلاثة عشر':13,'أربعة عشر':14,'خمسة عشر':15,
+  '٠':0,'١':1,'٢':2,'٣':3,'٤':4,'٥':5,'٦':6,'٧':7,'٨':8,'٩':9,
+};
+
+function arabicToNum(s){
+  const n = parseInt(s);
+  if(!isNaN(n)) return n;
+  const conv = s.replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+  const n2 = parseInt(conv);
+  if(!isNaN(n2)) return n2;
+  return ARABIC_NUMS[s.trim()] ?? null;
+}
+
+function findPlayerInText(token){
+  let p = players.find(pl => pl.name === token);
+  if(p) return p;
+  p = players.find(pl => pl.name.includes(token) || token.includes(pl.name));
+  return p || null;
+}
+
+function parseVoiceText(text){
+  const tokens = text.trim().split(/[\s،,]+/);
+  const results = [];
+  for(let i=0; i<tokens.length; i++){
+    const p = findPlayerInText(tokens[i]);
+    if(p && i+1 < tokens.length){
+      const num = arabicToNum(tokens[i+1]);
+      if(num !== null && num >= 0){
+        results.push({ player:p, val:num });
+        i++;
+      }
+    }
+  }
+  return results;
+}
+
+function openVoiceModal(){
+  document.getElementById('voiceStatus').textContent = 'اضغط "ابدأ التسمع" للبدء';
+  document.getElementById('voiceStatus').style.background='#69FF4710';
+  document.getElementById('voiceStatus').style.borderColor='var(--c3)';
+  document.getElementById('voiceStatus').style.color='var(--c3)';
+  document.getElementById('voiceResult').textContent  = 'سيظهر هنا ما تم التعرف عليه...';
+  document.getElementById('voiceStartBtn').textContent= '🎙️ ابدأ التسمع';
+  document.getElementById('voiceStartBtn').disabled   = false;
+  openM('mVoice');
+}
+
+function voiceStart(){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR){
+    document.getElementById('voiceStatus').textContent = '⚠️ المتصفح لا يدعم التسمع — جرب Safari على iOS 16+';
+    document.getElementById('voiceStatus').style.background='#FF52521a';
+    document.getElementById('voiceStatus').style.borderColor='#FF5252';
+    document.getElementById('voiceStatus').style.color='#FF5252';
+    return;
+  }
+
+  if(voiceRec){ try{ voiceRec.stop(); }catch(e){} voiceRec=null; }
+
+  const rec = new SR();
+  voiceRec = rec;
+  rec.lang = 'ar-SA';
+  rec.continuous = false;
+  rec.interimResults = true;
+
+  const statusEl = document.getElementById('voiceStatus');
+  const resultEl = document.getElementById('voiceResult');
+  const startBtn = document.getElementById('voiceStartBtn');
+
+  statusEl.textContent = '🔴 يستمع... تكلم الآن';
+  statusEl.style.background   = '#FF40810d';
+  statusEl.style.borderColor  = 'var(--c2)';
+  statusEl.style.color        = 'var(--c2)';
+  statusEl.classList.add('blinking');
+  startBtn.disabled = true;
+  startBtn.textContent = '⏳ يستمع...';
+
+  rec.onresult = (e) => {
+    let interim = '', final = '';
+    for(let i=0; i<e.results.length; i++){
+      const t = e.results[i][0].transcript;
+      if(e.results[i].isFinal) final += t + ' ';
+      else interim += t;
+    }
+    resultEl.textContent = (final || interim).trim();
+  };
+
+  rec.onend = () => {
+    statusEl.classList.remove('blinking');
+    statusEl.textContent  = '✅ انتهى التسمع — جارٍ التحليل...';
+    statusEl.style.background  = '#69FF4710';
+    statusEl.style.borderColor = 'var(--c3)';
+    statusEl.style.color       = 'var(--c3)';
+    startBtn.disabled  = false;
+    startBtn.textContent = '🎙️ أعد التسمع';
+
+    const text = resultEl.textContent;
+    if(!text || text === 'سيظهر هنا ما تم التعرف عليه...') return;
+
+    const parsed = parseVoiceText(text);
+    if(!parsed.length){
+      resultEl.textContent = '⚠️ لم يُتعرَّف على أسماء اللاعبين. حاول مرة أخرى.';
+      return;
+    }
+    // apply
+    parsed.forEach(({player,val}) => {
+      if(val > 0){ player.score += val; player.roundAdd += val; undoStack.push({pid:player.id, n:val}); }
+    });
+    saveState();
+    renderGame();
+
+    const summary = parsed.map(x=>`${x.player.name} +${x.val}`).join(' | ');
+    resultEl.textContent = '✅ تم: ' + summary;
+    notif(`🎙️ تم تسجيل نقاط ${parsed.length} لاعب`,'s');
+
+    parsed.forEach(({player}) => flash(player.id,'green'));
+  };
+
+  rec.onerror = (e) => {
+    statusEl.classList.remove('blinking');
+    const msgs = {
+      'not-allowed' : '⛔ لم يُسمح باستخدام الميكروفون. تحقق من إعدادات Safari.',
+      'no-speech'   : '🔇 لم يُكتشف أي كلام. حاول مرة أخرى.',
+      'network'     : '📡 خطأ في الشبكة. تحقق من الاتصال.',
+    };
+    statusEl.textContent = msgs[e.error] || `خطأ: ${e.error}`;
+    statusEl.style.background  = '#FF52521a';
+    statusEl.style.borderColor = '#FF5252';
+    statusEl.style.color       = '#FF5252';
+    startBtn.disabled = false;
+    startBtn.textContent = '🎙️ أعد المحاولة';
+  };
+
+  try{ rec.start(); }
+  catch(e){
+    statusEl.textContent = '⚠️ لا يمكن تشغيل الميكروفون. تأكد من الصلاحيات.';
+    startBtn.disabled = false;
+  }
+}
+
+function stopVoice(){
+  if(voiceRec){ try{ voiceRec.stop(); }catch(e){} voiceRec=null; }
+  closeM('mVoice');
+}
+
+// ═══════════════════════════
+// RANKING (sorted for display only)
+// ═══════════════════════════
+function openRanking(){
+  const sorted = [...players].sort((a,b)=>b.score-a.score);
+  const medals = ['🥇','🥈','🥉','🏅'];
+  document.getElementById('rankBody').innerHTML = sorted.map((p,i) => {
+    const isLead = i===0;
+    return `<div class="rk-row">
+      <span style="font-size:1.3rem">${medals[i]}</span>
+      <div class="rk-dot" style="background:${p.color}"></div>
+      <span class="rk-name">${esc(p.name)}${isLead?' 👑':''}</span>
+      <span class="rk-pts" style="color:${p.color}">${p.score}</span>
+    </div>`;
+  }).join('');
+  openM('mRank');
+}
+
+// ═══════════════════════════
+// HISTORY
+// ═══════════════════════════
+function openHistory(){
+  const body = document.getElementById('histBody');
+  if(!history.length){
+    body.innerHTML='<p style="text-align:center;color:#444;padding:28px">لا توجد جولات مكتملة بعد</p>';
+  } else {
+    body.innerHTML = [...history].reverse().map(r=>`
+      <div class="hr-round">
+        <div class="hr-title">جولة ${r.round}</div>
+        ${r.adds.length ? '<div class="hr-sep">▲ نقاط مضافة</div>' : ''}
+        ${r.adds.map(e=>`
+          <div class="hr-entry">
+            <span style="color:${e.color}">${esc(e.name)}</span>
+            <span style="color:var(--c3)">+${e.add} → ${r.totals[e.name]??'—'}</span>
+          </div>`).join('')}
+        ${r.deds.length ? '<div class="hr-sep">▼ خصومات</div>' : ''}
+        ${r.deds.map(e=>`
+          <div class="hr-entry">
+            <span style="color:${e.color}">${esc(e.name)}</span>
+            <span style="color:#FF5252">-${e.ded} → ${r.totals[e.name]??'—'}</span>
+          </div>`).join('')}
+      </div>`).join('');
+  }
+  openM('mHist');
+}
+
+// ═══════════════════════════
+// RESET
+// ═══════════════════════════
+function resetScores(){
+  players.forEach(p=>{ p.score=0; p.roundAdd=0; });
+  round=1; history=[]; undoStack=[];
+  saveState();
+  closeM('mReset'); renderGame();
+  notif('🔁 تمت إعادة التعيين','i');
+}
+function fullReset(){
+  players=[]; round=1; history=[]; undoStack=[];
+  clearState();
+  [0,1,2,3].forEach(i=>{ const e=document.getElementById('pn'+i); if(e) e.value=''; });
+  document.getElementById('targetInp').value='51';
+  document.getElementById('resumeNote').style.display='none';
+  showScreen('setup');
+}
+
+// ═══════════════════════════
+// RESULTS — LOWEST score wins (reaching TARGET = out/loser)
+// ═══════════════════════════
+function showResults(){
+  // ascending: lowest score first = WINNER, highest = loser who reached the limit
+  const sorted  = [...players].sort((a,b) => a.score - b.score);
+  const medals  = ['🥇','🥈','🥉','🏅'];
+  const winner  = sorted[0];
+  const loser   = sorted[sorted.length-1];
+
+  document.getElementById('resSub').innerHTML =
+    `🏆 الفائز (الأقل نقاطًا): <strong style="color:${winner.color}">${esc(winner.name)}</strong> (${winner.score} نقطة)<br>` +
+    `❌ الخاسر: <strong style="color:${loser.color}">${esc(loser.name)}</strong> (${loser.score} نقطة)`;
+
+  document.getElementById('resList').innerHTML = sorted.map((p,i)=>{
+    const isWinner = i===0;
+    const isLoser  = i===sorted.length-1;
+    const tag = isWinner
+      ? `<span class="res-tag" style="background:#FFD74020;color:var(--c4)">فائز 👑</span>`
+      : (isLoser ? `<span class="res-tag" style="background:#FF525220;color:#FF5252">خرج ❌</span>` : '');
+    return `
+    <div class="res-row ${isWinner?'winner-row':''} ${isLoser?'loser-row':''}">
+      <span class="res-med">${medals[i]}</span>
+      <span class="res-name">${esc(p.name)}</span>
+      ${tag}
+      <span class="res-pts" style="color:${p.color}">${p.score}</span>
+    </div>`;
+  }).join('');
+
+  const b = document.getElementById('tieBanner');
+  if(b) b.style.display='none';
+  showScreen('results');
+}
+
+// ═══════════════════════════
+// UTILS
+// ═══════════════════════════
+function flash(pid, type){
+  const el = document.getElementById('card'+pid);
+  if(!el) return;
+  el.style.background = type==='green' ? '#69FF4718' : '#FF52521a';
+  setTimeout(()=>el.style.background='', 450);
+}
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function openM(id) { document.getElementById(id).classList.add('open'); }
+function closeM(id){ document.getElementById(id).classList.remove('open'); }
+
+function notif(msg, type='i'){
+  clearTimeout(ntTO);
+  const el = document.getElementById('notif');
+  el.textContent = msg;
+  el.className   = `notif ${type}`;
+  el.style.display = 'block';
+  el.style.animation = 'none';
+  requestAnimationFrame(()=>el.style.animation='notifIn .3s ease');
+  ntTO = setTimeout(()=>el.style.display='none', 2800);
+}
+
+document.querySelectorAll('.overlay').forEach(o=>{
+  o.addEventListener('click', e=>{ if(e.target===o) o.classList.remove('open'); });
+});
+</script>
+</body>
+</html>
