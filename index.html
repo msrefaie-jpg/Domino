@@ -155,6 +155,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 .actions{display:flex;gap:8px;padding:2px 14px calc(var(--sab) + 10px);flex-shrink:0}
 .abt{flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:6px;padding:8px 6px;background:var(--s1);border:1.5px solid var(--border);border-radius:11px;cursor:pointer;min-width:0;color:var(--text)}
 .abt:active{transform:scale(.94)}
+.abt:disabled{opacity:.4;pointer-events:none}
 .abt-icon{font-size:.9rem}
 .abt-lbl{font-size:.72rem;color:var(--muted);white-space:nowrap;font-weight:700}
 .abt.active{color:var(--danger);border-color:color-mix(in srgb,var(--danger) 45%,transparent);background:color-mix(in srgb,var(--danger) 8%,transparent)}
@@ -497,6 +498,7 @@ let dedSelections = {};
 let voiceRec = null;
 let uVoiceRec = null;
 let lastVoiceSnapshot = null;
+let undoStack = [];
 let ntTO = null;
 const LS_GAME='domino_game_v1', LS_ARCH='domino_archive_v1';
 
@@ -793,7 +795,7 @@ function startGame(){
   }
   TARGET=parseInt(document.getElementById('targetInp').value)||51;
   players=selectedNames.map((name,i)=>({id:i,name,score:0,color:pcolor(i),roundAdd:0,roundEntries:[]}));
-  round=1; history=[];
+  round=1; history=[]; undoStack=[];
   showScreen('game');
   renderGame();
   requestWakeLock();
@@ -842,11 +844,12 @@ function renderGame(){
   const rec = !!uVoiceRec;
   const acts = [
     {icon: rec?'⏹️':'🎙️', lbl: rec?'إيقاف':'صوتي', fn:"toggleVoice()", active:rec},
+    {icon:'↩️',lbl:'تراجع', fn:"undoLast()", disabled: undoStack.length===0},
     {icon:'🧾',lbl:'السجل', fn:"openHistory()"},
     {icon:'🔁',lbl:'إعادة', fn:"openM('mReset')"},
   ];
   document.getElementById('actBar').innerHTML = acts.map(a=>`
-    <button class="abt${a.active?' active':''}" onclick="${a.fn}">
+    <button class="abt${a.active?' active':''}" ${a.disabled?'disabled':''} onclick="${a.fn}">
       <span class="abt-icon">${a.icon}</span>
       <span class="abt-lbl">${a.lbl}</span>
     </button>`).join('');
@@ -910,10 +913,29 @@ function applyAdd(pid, n){
   p.score    += n;
   p.roundAdd += n;
   (p.roundEntries || (p.roundEntries=[])).push(n);
+  undoStack.push({pid, n});
   flash(pid, 'green');
   renderGame();
   saveState();
   notif(`✅ ${p.name} +${n} → ${p.score}`,'s');
+}
+
+function undoLast(){
+  const last = undoStack.pop();
+  if(!last){ notif('لا يوجد ما يمكن التراجع عنه','i'); return; }
+  const p = players[last.pid];
+  if(p){
+    p.score    = Math.max(0, p.score - last.n);
+    p.roundAdd = Math.max(0, p.roundAdd - last.n);
+    if(p.roundEntries && p.roundEntries.length){
+      const idx = p.roundEntries.lastIndexOf(last.n);
+      if(idx > -1) p.roundEntries.splice(idx,1); else p.roundEntries.pop();
+    }
+    flash(p.id,'red');
+  }
+  renderGame();
+  saveState();
+  notif(`↩️ تراجع${p? ': '+p.name+' -'+last.n : ''}`,'i');
 }
 
 // ═══════════════════════════
@@ -1012,6 +1034,7 @@ function applyEndRound(){
 
   history.push(rec);
   round++;
+  undoStack = [];
 
   closeM('mEnd');
   renderGame();
@@ -1176,7 +1199,7 @@ function uVoiceStart(){
       const parsed=parseVoiceText(text);
       if(!parsed.length) continue;
       parsed.forEach(({player,val})=>{
-        if(val>0){ player.score+=val; player.roundAdd+=val; (player.roundEntries||(player.roundEntries=[])).push(val); flash(player.id,'green'); }
+        if(val>0){ player.score+=val; player.roundAdd+=val; (player.roundEntries||(player.roundEntries=[])).push(val); undoStack.push({pid:player.id,n:val}); flash(player.id,'green'); }
       });
       renderGame();
       saveState();
@@ -1402,8 +1425,8 @@ function fallbackDownload(canvas){
   notif('✅ تم حفظ الصورة','s');
 }
 function resetScores(){
-  players.forEach(p=>{ p.score=0; p.roundAdd=0; });
-  round=1; history=[];
+  players.forEach(p=>{ p.score=0; p.roundAdd=0; p.roundEntries=[]; });
+  round=1; history=[]; undoStack=[];
   closeM('mReset'); renderGame();
   saveState();
   notif('🔁 تمت إعادة التعيين','i');
