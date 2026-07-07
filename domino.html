@@ -233,7 +233,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     <div class="resume-note" id="resumeNote" onclick="resumeGame()"></div>
     <div id="pInputs"></div>
     <div class="target-row">
-      <label>🏁 حد النقاط<br><span style="font-size:.72rem">الخروج عند بلوغه</span></label>
+      <label>🏁 حد الفوز<br><span style="font-size:.72rem">يفوز من يبلغه أولاً</span></label>
       <input class="target-inp" type="number" id="targetInp" value="51" min="10" max="500">
     </div>
     <button class="btn-start" onclick="startGame()">🎲 ابدأ اللعبة</button>
@@ -1052,15 +1052,15 @@ function fullReset(){
 // RESULTS — LOWEST score wins (reaching TARGET = out/loser)
 // ═══════════════════════════
 function showResults(){
-  // ascending: lowest score first = WINNER, highest = loser who reached the limit
-  const sorted  = [...players].sort((a,b) => a.score - b.score);
+  // descending: highest score first = WINNER (reached the target), lowest = loser who is out
+  const sorted  = [...players].sort((a,b) => b.score - a.score);
   const medals  = ['🥇','🥈','🥉','🏅'];
   const winner  = sorted[0];
   const loser   = sorted[sorted.length-1];
 
   document.getElementById('resSub').innerHTML =
-    `🏆 الفائز (الأقل نقاطًا): <strong style="color:${winner.color}">${esc(winner.name)}</strong> (${winner.score} نقطة)<br>` +
-    `❌ الخاسر: <strong style="color:${loser.color}">${esc(loser.name)}</strong> (${loser.score} نقطة)`;
+    `🏆 الفائز (بلغ الحد): <strong style="color:${winner.color}">${esc(winner.name)}</strong> (${winner.score} نقطة)<br>` +
+    `❌ الخاسر (خرج): <strong style="color:${loser.color}">${esc(loser.name)}</strong> (${loser.score} نقطة)`;
 
   document.getElementById('resList').innerHTML = sorted.map((p,i)=>{
     const isWinner = i===0;
