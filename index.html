@@ -105,22 +105,27 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 .hdr{display:flex;justify-content:space-between;align-items:center;padding:11px 16px 8px;border-bottom:1px solid var(--border);flex-shrink:0}
 .round-pill{background:var(--primary);border:none;color:#fff;padding:5px 14px;border-radius:9px;font-size:.78rem;font-weight:800}
 .hdr-mid{font-size:1.15rem;font-weight:900;display:flex;align-items:center;gap:2px;color:var(--text)}
+.hdr-left{display:flex;gap:8px;align-items:center}
 .theme-ico{width:38px;height:38px;border-radius:10px;background:var(--s1);border:1.5px solid var(--border);color:var(--text);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .theme-ico:active{transform:scale(.9)}
+.end-ico{color:var(--danger);border-color:color-mix(in srgb,var(--danger) 42%,transparent);font-weight:900}
 
 .felt{margin:9px 12px 7px;padding:16px 14px 14px;border-radius:22px;border:5px solid var(--wood);
   background:radial-gradient(ellipse at 50% 38%,var(--felt1),var(--felt2));
   box-shadow:inset 0 2px 20px rgba(0,0,0,.4);flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
 .felt-cap{text-align:center;color:#E9CF86;font-size:.74rem;font-weight:700;margin-bottom:10px;letter-spacing:.5px}
 .cards{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:10px;flex:1;min-height:0}
-.pcard{background:var(--s1);border-radius:14px;padding:10px 12px;border:1.5px solid var(--border);display:flex;flex-direction:column;justify-content:center;overflow:hidden;cursor:pointer;user-select:none;position:relative;box-shadow:0 8px 16px -6px rgba(0,0,0,.45);transition:transform .1s}
+.pcard{background:var(--s1);border-radius:14px;padding:10px 12px;border:1.5px solid var(--border);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;cursor:pointer;user-select:none;position:relative;box-shadow:0 8px 16px -6px rgba(0,0,0,.45);transition:transform .1s}
 .pcard:active{transform:scale(.96)}
 .pcard.is-leader{outline:2.5px solid var(--gold);outline-offset:-1px}
 .pcard-top{display:flex;align-items:center;justify-content:space-between;gap:6px;padding-bottom:7px;margin-bottom:6px;border-bottom:2px solid var(--border)}
 .pcard-name{font-weight:800;font-size:.9rem;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pcard-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
-.pcard-score{font-size:2.35rem;font-weight:900;line-height:1;text-align:center;font-variant-numeric:tabular-nums}
+.pcard-score{font-size:1.95rem;font-weight:900;line-height:1;text-align:center;font-variant-numeric:tabular-nums}
 .pcard-radd{font-size:.68rem;font-weight:700;text-align:center;margin-top:3px;opacity:.85}
+.pcard-entries{text-align:center;line-height:1.5;min-height:16px}
+.pcard-entries .chip{display:inline-block;padding:0 6px;margin:2px 2px 0;border:1.2px solid;border-radius:8px;font-size:.66rem;font-weight:800;font-variant-numeric:tabular-nums}
+.pcard-entries .chip-empty{font-size:.62rem;color:var(--muted);opacity:.7}
 .prog-bg{background:var(--s2);border-radius:4px;height:5px;margin-top:9px;overflow:hidden}
 .prog-fill{height:100%;border-radius:4px;transition:width .55s cubic-bezier(.4,0,.2,1)}
 .pcard-target{font-size:.6rem;color:var(--muted);margin-top:4px;text-align:center;font-weight:600}
@@ -147,13 +152,13 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 .mode-toggle{padding:9px 16px;border-radius:11px;border:none;background:var(--primary);color:#fff;font-size:.82rem;font-weight:800;cursor:pointer;font-family:var(--font);white-space:nowrap;flex-shrink:0;box-shadow:0 8px 16px -8px color-mix(in srgb,var(--primary) 55%,transparent)}
 .mode-toggle:active{transform:scale(.95)}
 
-.actions{display:flex;gap:6px;padding:4px 12px 14px;flex-shrink:0}
-.abt{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 4px;background:var(--s1);border:1.5px solid var(--border);border-radius:12px;cursor:pointer;min-width:0;color:var(--text)}
-.abt:active{transform:scale(.92)}
-.abt-icon{font-size:1.05rem}
-.abt-lbl{font-size:.58rem;color:var(--muted);white-space:nowrap;font-weight:700}
-.abt.danger{color:var(--danger);border-color:color-mix(in srgb,var(--danger) 35%,transparent)}
-.abt.danger .abt-lbl{color:var(--danger)}
+.actions{display:flex;gap:8px;padding:2px 14px calc(var(--sab) + 10px);flex-shrink:0}
+.abt{flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:6px;padding:8px 6px;background:var(--s1);border:1.5px solid var(--border);border-radius:11px;cursor:pointer;min-width:0;color:var(--text)}
+.abt:active{transform:scale(.94)}
+.abt-icon{font-size:.9rem}
+.abt-lbl{font-size:.72rem;color:var(--muted);white-space:nowrap;font-weight:700}
+.abt.active{color:var(--danger);border-color:color-mix(in srgb,var(--danger) 45%,transparent);background:color-mix(in srgb,var(--danger) 8%,transparent)}
+.abt.active .abt-lbl{color:var(--danger)}
 
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 .blinking{animation:blink .7s infinite}
@@ -339,28 +344,10 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
       <span class="accent-svg" style="color:var(--c1);display:inline-flex;vertical-align:middle;margin-left:6px"><svg viewBox="0 0 130 115" fill="none" xmlns="http://www.w3.org/2000/svg" width="28" height="24"><g transform="translate(42,62) rotate(-22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="0" cy="-16" r="3.2" fill="currentColor"/><circle cx="0" cy="16" r="3.2" fill="currentColor"/></g><g transform="translate(88,62) rotate(22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="-8" cy="-23" r="3" fill="currentColor"/><circle cx="0" cy="-16" r="3" fill="currentColor"/><circle cx="8" cy="-9" r="3" fill="currentColor"/><circle cx="-8" cy="9" r="3" fill="currentColor"/><circle cx="0" cy="16" r="3" fill="currentColor"/><circle cx="8" cy="23" r="3" fill="currentColor"/></g><g transform="translate(65,50)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="0" cy="-16" r="3.2" fill="currentColor"/><circle cx="-7" cy="10" r="3.2" fill="currentColor"/><circle cx="7" cy="20" r="3.2" fill="currentColor"/></g></svg></span>
       دومينو
     </div>
-    <button class="theme-ico" id="themeIco" onclick="toggleTheme()" title="الوضع الليلي/النهاري">🌙</button>
-  </div>
-
-  <!-- ── Inline Voice Bar ── -->
-  <div class="voice-bar">
-    <div class="vb-status" id="vbStatus">🎙️ اضغط للتسجيل الصوتي</div>
-    <!-- rec button: red circle with square inside (SVG) -->
-    <button class="vb-btn vb-btn-rec" id="vbBtnStart" onclick="uVoiceStart()">
-      <svg width="18" height="18" viewBox="0 0 18 18">
-        <circle cx="9" cy="9" r="8" fill="#FF5252" opacity=".2" stroke="#FF5252" stroke-width="1.5"/>
-        <rect x="6" y="6" width="6" height="6" rx="1" fill="#FF5252"/>
-      </svg>
-      <span>تسجيل</span>
-    </button>
-    <button class="vb-btn vb-btn-stop" id="vbBtnStop" onclick="uVoiceStop()" disabled>
-      <span style="font-size:1rem">⏹</span>
-      <span>إيقاف</span>
-    </button>
-    <button class="vb-btn vb-btn-undo" id="vbBtnUndo" onclick="uVoiceUndo()" disabled>
-      <span style="font-size:1rem">↩️</span>
-      <span>تراجع</span>
-    </button>
+    <div class="hdr-left">
+      <button class="theme-ico" id="themeIco" onclick="toggleTheme()" title="الوضع الليلي/النهاري">🌙</button>
+      <button class="theme-ico end-ico" onclick="showResults()" title="إنهاء اللعبة">✕</button>
+    </div>
   </div>
 
   <div class="felt"><div class="felt-cap" id="feltCap"></div><div class="cards" id="cardsGrid"></div></div>
@@ -525,7 +512,7 @@ const THEMES = {
 };
 let currentTheme = 'light';
 function pcolor(i){ return (THEMES[currentTheme]||THEMES.light).seats[i]; }
-function ea(v){ return String(v).replace(/[0-9]/g, d=>'٠١٢٣٤٥٦٧٨٩'[+d]); }
+function ea(v){ return String(v); }
 function applyTheme(key){
   if(!THEMES[key]) key='light';
   currentTheme=key;
@@ -687,6 +674,7 @@ function loadState(){
     const s=JSON.parse(localStorage.getItem(LS_GAME));
     if(s && Array.isArray(s.players) && s.players.length){
       players=s.players; round=s.round||1; history=s.history||[]; TARGET=s.TARGET||51;
+      players.forEach(p=>{ if(!Array.isArray(p.roundEntries)) p.roundEntries=[]; });
       return true;
     }
   }catch(e){}
@@ -804,7 +792,7 @@ function startGame(){
     return;
   }
   TARGET=parseInt(document.getElementById('targetInp').value)||51;
-  players=selectedNames.map((name,i)=>({id:i,name,score:0,color:pcolor(i),roundAdd:0}));
+  players=selectedNames.map((name,i)=>({id:i,name,score:0,color:pcolor(i),roundAdd:0,roundEntries:[]}));
   round=1; history=[];
   showScreen('game');
   renderGame();
@@ -843,22 +831,22 @@ function renderGame(){
         <span class="pcard-name">${p.name}${isLead ? ' 👑' : ''}</span>
         <span class="pcard-dot" style="background:${p.color}"></span>
       </div>
-      <div class="pcard-score" style="color:${p.color}">${ea(p.score)}</div>
-      <div class="pcard-radd" style="color:${p.color}">+${ea(p.roundAdd)} هذه الجولة</div>
+      <div class="pcard-score" style="color:${p.color}">${p.score}</div>
+      <div class="pcard-entries">${(p.roundEntries&&p.roundEntries.length)? p.roundEntries.map(x=>`<span class="chip" style="color:${p.color};border-color:${p.color}66">+${x}</span>`).join('') : `<span class="chip-empty">— هذه الجولة</span>`}</div>
       <div class="prog-bg"><div class="prog-fill" style="width:${pct}%;background:${p.color}"></div></div>
-      <div class="pcard-target">${ea(p.score)} / ${ea(TARGET)}</div>`;
+      <div class="pcard-target">${p.score} / ${TARGET}</div>`;
     grid.appendChild(d);
   });
 
-  // action bar
+  // action bar (voice toggle merged here)
+  const rec = !!uVoiceRec;
   const acts = [
-    {icon:'📊',lbl:'الترتيب', fn:"openRanking()"},
-    {icon:'🧾',lbl:'السجل',   fn:"openHistory()"},
-    {icon:'🔁',lbl:'إعادة',   fn:"openM('mReset')"},
-    {icon:'❌',lbl:'إنهاء',   fn:"showResults()", danger:true},
+    {icon: rec?'⏹️':'🎙️', lbl: rec?'إيقاف':'صوتي', fn:"toggleVoice()", active:rec},
+    {icon:'🧾',lbl:'السجل', fn:"openHistory()"},
+    {icon:'🔁',lbl:'إعادة', fn:"openM('mReset')"},
   ];
   document.getElementById('actBar').innerHTML = acts.map(a=>`
-    <button class="abt${a.danger?' danger':''}" onclick="${a.fn}">
+    <button class="abt${a.active?' active':''}" onclick="${a.fn}">
       <span class="abt-icon">${a.icon}</span>
       <span class="abt-lbl">${a.lbl}</span>
     </button>`).join('');
@@ -910,7 +898,7 @@ function selectPlayerInModal(pid){
 
 function doQuickAdd(val){
   // save snapshot for undo (same mechanism as voice)
-  lastVoiceSnapshot = players.map(p=>({id:p.id, score:p.score, roundAdd:p.roundAdd}));
+  lastVoiceSnapshot = players.map(p=>({id:p.id, score:p.score, roundAdd:p.roundAdd, entries:[...(p.roundEntries||[])]}));
   applyAdd(activePid, val);
   selectPlayerInModal(activePid);
   // enable undo button
@@ -921,6 +909,7 @@ function applyAdd(pid, n){
   const p = players[pid];
   p.score    += n;
   p.roundAdd += n;
+  (p.roundEntries || (p.roundEntries=[])).push(n);
   flash(pid, 'green');
   renderGame();
   saveState();
@@ -1018,6 +1007,7 @@ function applyEndRound(){
     }
     rec.totals[p.name] = p.score;
     p.roundAdd = 0;
+    p.roundEntries = [];
   });
 
   history.push(rec);
@@ -1157,9 +1147,10 @@ function vbSetStatus(msg, color){
   el.style.color=color||'#555';
 }
 
+function toggleVoice(){ if(uVoiceRec) uVoiceStop(); else uVoiceStart(); }
 function uVoiceStart(){
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){ vbSetStatus('⚠️ الصوت غير مدعوم','#FF5252'); return; }
+  if(!SR){ notif('⚠️ المتصفح لا يدعم التسجيل الصوتي — جرّب Safari','e'); return; }
   if(uVoiceRec){ try{uVoiceRec.stop();}catch(e){} }
 
   const rec=new SR();
@@ -1168,11 +1159,10 @@ function uVoiceStart(){
   rec.continuous=true;      // ← يستمر حتى الإيقاف
   rec.interimResults=true;
 
-  setVoiceBtn('Start',false); setVoiceBtn('Stop',true); setVoiceBtn('Undo',false);
-  vbSetStatus('🔴 يستمع... قل اسم اللاعب والنقاط','#FF4081');
+  renderGame();
+  notif('🔴 يستمع... قل الاسم ثم الرقم','i');
 
-  // snapshot للتراجع عند بدء الجلسة
-  lastVoiceSnapshot=players.map(p=>({id:p.id,score:p.score,roundAdd:p.roundAdd}));
+  lastVoiceSnapshot=players.map(p=>({id:p.id,score:p.score,roundAdd:p.roundAdd,entries:[...(p.roundEntries||[])]}));
   let sessionApplied=false;
 
   rec.onresult=(e)=>{
@@ -1186,48 +1176,47 @@ function uVoiceStart(){
       const parsed=parseVoiceText(text);
       if(!parsed.length) continue;
       parsed.forEach(({player,val})=>{
-        if(val>0){ player.score+=val; player.roundAdd+=val; flash(player.id,'green'); }
+        if(val>0){ player.score+=val; player.roundAdd+=val; (player.roundEntries||(player.roundEntries=[])).push(val); flash(player.id,'green'); }
       });
       renderGame();
       saveState();
       sessionApplied=true;
       const summary=parsed.map(x=>`${x.player.name}+${x.val}`).join(' · ');
-      vbSetStatus(`✅ ${summary} — استمر في التسجيل`,'#69FF47');
+      notif(`🎙️ ${summary}`,'s');
     }
   };
 
   rec.onend=()=>{
     // إذا أُوقف تلقائياً (iOS) أعد التشغيل إذا لم يكن المستخدم هو من أوقفه
     if(uVoiceRec){
-      try{ uVoiceRec.start(); }catch(e){ uVoiceRec=null; setVoiceBtn('Start',true); setVoiceBtn('Stop',false); }
+      try{ uVoiceRec.start(); }catch(e){ uVoiceRec=null; renderGame(); }
     }
   };
 
   rec.onerror=(e)=>{
     if(e.error==='no-speech') return; // تجاهل صمت مؤقت
-    const msgs={'not-allowed':'⛔ لم يُسمح بالميكروفون','network':'📡 خطأ شبكة'};
-    vbSetStatus(msgs[e.error]||`خطأ: ${e.error}`,'#FF5252');
-    if(e.error==='not-allowed'){ uVoiceRec=null; setVoiceBtn('Start',true); setVoiceBtn('Stop',false); }
+    const msgs={'not-allowed':'⛔ لم يُسمح باستخدام الميكروفون','network':'📡 خطأ في الشبكة'};
+    notif(msgs[e.error]||`خطأ: ${e.error}`,'e');
+    if(e.error==='not-allowed'){ uVoiceRec=null; renderGame(); }
   };
 
   try{ rec.start(); }
-  catch(e){ vbSetStatus('⚠️ تعذّر تشغيل الميكروفون','#FF5252'); uVoiceRec=null; }
+  catch(e){ notif('⚠️ تعذّر تشغيل الميكروفون','e'); uVoiceRec=null; renderGame(); }
 }
 
 function uVoiceStop(){
   const rec=uVoiceRec;
   uVoiceRec=null; // أوقف أولاً حتى لا يُعاد تشغيله في onend
   if(rec){ try{rec.stop();}catch(e){} }
-  setVoiceBtn('Start',true); setVoiceBtn('Stop',false);
-  if(lastVoiceSnapshot) setVoiceBtn('Undo',true);
-  vbSetStatus('⏹ توقف — اضغط تراجع للإلغاء','#888');
+  renderGame();
+  notif('⏹ توقف التسجيل الصوتي','i');
 }
 
 function uVoiceUndo(){
   if(!lastVoiceSnapshot) return;
   lastVoiceSnapshot.forEach(s=>{
     const p=players.find(x=>x.id===s.id);
-    if(p){p.score=s.score;p.roundAdd=s.roundAdd;}
+    if(p){p.score=s.score;p.roundAdd=s.roundAdd;p.roundEntries=[...(s.entries||[])];}
   });
   lastVoiceSnapshot=null;
   renderGame();
