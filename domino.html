@@ -128,24 +128,25 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 #game{z-index:1}
 .hdr{display:flex;justify-content:space-between;align-items:center;padding:11px 16px 8px;border-bottom:1px solid var(--border);flex-shrink:0}
 .round-pill{background:var(--primary);border:none;color:#fff;padding:5px 14px;border-radius:9px;font-size:.78rem;font-weight:800}
-.hdr-mid{font-size:1.15rem;font-weight:900;display:flex;align-items:center;gap:2px;color:var(--text)}
+.hdr-mid{font-size:.82rem;font-weight:900;text-align:center;color:var(--primary);line-height:1.2;flex:1;padding:0 6px}
 .hdr-left{display:flex;gap:8px;align-items:center}
 .theme-ico{width:38px;height:38px;border-radius:10px;background:var(--s1);border:1.5px solid var(--border);color:var(--text);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .theme-ico:active{transform:scale(.9)}
 .end-ico{color:var(--danger);border-color:color-mix(in srgb,var(--danger) 42%,transparent);font-weight:900}
+.setup-theme{position:absolute;top:8px;left:12px;width:36px;height:36px;z-index:5}
 
-.felt{margin:9px 12px 7px;padding:16px 14px 14px;border-radius:22px;border:5px solid var(--wood);
+.felt{margin:8px 10px 6px;padding:14px 12px 12px;border-radius:22px;border:5px solid var(--wood);
   background:radial-gradient(ellipse at 50% 38%,var(--felt1),var(--felt2));
   box-shadow:inset 0 2px 20px rgba(0,0,0,.4);flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
-.felt-cap{text-align:center;color:#E9CF86;font-size:.74rem;font-weight:700;margin-bottom:10px;letter-spacing:.5px}
-.cards{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:10px;flex:1;min-height:0}
+.felt-cap{text-align:center;color:#E9CF86;font-size:.78rem;font-weight:700;margin-bottom:9px;letter-spacing:.3px}
+.cards{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:11px;flex:1;min-height:0}
 .pcard{background:var(--s1);border-radius:14px;padding:10px 12px;border:1.5px solid var(--border);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;cursor:pointer;user-select:none;position:relative;box-shadow:0 8px 16px -6px rgba(0,0,0,.45);transition:transform .1s}
 .pcard:active{transform:scale(.96)}
 .pcard.is-leader{outline:2.5px solid var(--gold);outline-offset:-1px}
 .pcard-top{display:flex;align-items:center;justify-content:space-between;gap:6px;padding-bottom:7px;margin-bottom:6px;border-bottom:2px solid var(--border)}
 .pcard-name{font-weight:800;font-size:.9rem;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pcard-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
-.pcard-score{font-size:1.95rem;font-weight:900;line-height:1;text-align:center;font-variant-numeric:tabular-nums}
+.pcard-score{font-size:2.35rem;font-weight:900;line-height:1;text-align:center;font-variant-numeric:tabular-nums}
 .pcard-radd{font-size:.68rem;font-weight:700;text-align:center;margin-top:3px;opacity:.85}
 .pcard-entries{text-align:center;line-height:1.5;min-height:16px}
 .pcard-entries .chip{display:inline-block;padding:0 6px;margin:2px 2px 0;border:1.2px solid;border-radius:8px;font-size:.66rem;font-weight:800;font-variant-numeric:tabular-nums}
@@ -191,7 +192,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 /* ══ MODALS ══ */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;display:none;align-items:flex-end;justify-content:center}
 .overlay.open{display:flex;animation:dtFade .2s ease}
-.mbox{background:var(--s1);border:1px solid var(--border);border-radius:22px 22px 0 0;padding:14px 14px calc(18px + var(--sab));width:100%;max-width:480px;max-height:94vh;overflow-y:auto;animation:slideUp .26s ease;box-shadow:0 -8px 30px rgba(0,0,0,.25)}
+.mbox{background:var(--s1);border:1px solid var(--border);border-radius:22px 22px 0 0;padding:14px 14px calc(18px + var(--sab));width:100%;max-width:480px;max-height:calc(100vh - var(--sat) - 16px);overflow-y:auto;animation:slideUp .26s ease;box-shadow:0 -8px 30px rgba(0,0,0,.25)}
 .mhdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .mtitle{font-size:.95rem;font-weight:800;color:var(--text)}
 .mclose{background:var(--s2);border:none;color:var(--muted);font-size:.95rem;cursor:pointer;padding:5px 11px;border-radius:9px}
@@ -271,7 +272,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 .res-king-wrap{display:flex;flex-direction:column;align-items:center}
 .res-king-crown{font-size:2.9rem;animation:crownBounce .8s ease infinite}
 .res-king-name{font-size:1.7rem;font-weight:900;color:var(--gold);margin-top:1px}
-.res-king-title{font-size:.9rem;color:var(--gold);opacity:.85;letter-spacing:3px;margin-top:1px}
+.res-king-title{font-size:.82rem;color:var(--gold);opacity:.9;font-weight:800;letter-spacing:1px;margin-top:2px}
 .res-rounds{font-size:.8rem;color:var(--muted);margin-top:4px}
 .res-list{width:100%;max-width:420px;display:flex;flex-direction:column;margin:8px auto 12px;padding:0 16px}
 .res-row{display:flex;align-items:center;gap:14px;padding:11px 16px;background:var(--s1);border:1.5px solid var(--border);margin-bottom:7px;border-radius:14px;box-shadow:0 6px 14px -8px rgba(0,0,0,.4)}
@@ -318,8 +319,9 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
 <!-- ══ SETUP ══ -->
 <div class="screen active" id="setup">
+  <button class="theme-ico setup-theme" id="themeIco2" onclick="toggleTheme()" title="الوضع الليلي/النهاري">🌙</button>
   <div class="setup-box">
-    <div class="big-logo accent-svg" style="width:104px;height:92px;color:var(--c1)"><svg viewBox="0 0 130 115" fill="none" xmlns="http://www.w3.org/2000/svg" width="104" height="92"><g transform="translate(42,62) rotate(-22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="0" cy="-16" r="3.2" fill="currentColor"/><circle cx="0" cy="16" r="3.2" fill="currentColor"/></g><g transform="translate(88,62) rotate(22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="-8" cy="-23" r="3" fill="currentColor"/><circle cx="0" cy="-16" r="3" fill="currentColor"/><circle cx="8" cy="-9" r="3" fill="currentColor"/><circle cx="-8" cy="9" r="3" fill="currentColor"/><circle cx="0" cy="16" r="3" fill="currentColor"/><circle cx="8" cy="23" r="3" fill="currentColor"/></g><g transform="translate(65,50)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="0" cy="-16" r="3.2" fill="currentColor"/><circle cx="-7" cy="10" r="3.2" fill="currentColor"/><circle cx="7" cy="20" r="3.2" fill="currentColor"/></g></svg></div>
+    <div class="big-logo accent-svg" style="width:112px;height:98px;color:var(--c1)"><svg viewBox="-10 -8 150 131" fill="none" xmlns="http://www.w3.org/2000/svg" width="112" height="98"><g transform="translate(42,62) rotate(-22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="0" cy="-16" r="3.2" fill="currentColor"/><circle cx="0" cy="16" r="3.2" fill="currentColor"/></g><g transform="translate(88,62) rotate(22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="-8" cy="-23" r="3" fill="currentColor"/><circle cx="0" cy="-16" r="3" fill="currentColor"/><circle cx="8" cy="-9" r="3" fill="currentColor"/><circle cx="-8" cy="9" r="3" fill="currentColor"/><circle cx="0" cy="16" r="3" fill="currentColor"/><circle cx="8" cy="23" r="3" fill="currentColor"/></g><g transform="translate(65,50)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="0" cy="-16" r="3.2" fill="currentColor"/><circle cx="-7" cy="10" r="3.2" fill="currentColor"/><circle cx="7" cy="20" r="3.2" fill="currentColor"/></g></svg></div>
     <div class="app-title tagline">اللعب الصح مع الناس الغلط</div>
     <div class="app-sub" id="jokeSub">😂 أقوال مأثورة</div>
     <div class="resume-note" id="resumeNote" onclick="resumeGame()"></div>
@@ -337,12 +339,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
       <button class="add-btn2" onclick="addInlineName()">إضافة</button>
     </div>
 
-    <div class="target-row">
-      <label>🏁 حد النقاط<br><span style="font-size:.72rem">الخروج عند بلوغه</span></label>
-      <input class="target-inp" type="number" id="targetInp" value="51" min="10" max="500">
-    </div>
-    <button class="theme-link" id="themeLink" onclick="toggleTheme()">🌙 الوضع الليلي</button>
-    <button class="btn-arch" onclick="openArchive()">🏆 السجل التاريخي — الألعاب السابقة</button>
+    <input type="hidden" id="targetInp" value="51">
 <button class="btn-start" onclick="startGame()">🎲 ابدأ اللعبة</button>
   </div>
 </div>
@@ -351,13 +348,10 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 <div class="screen" id="game">
   <div class="hdr">
     <span class="round-pill" id="roundPill">جولة 1</span>
-    <div class="hdr-mid">
-      <span class="accent-svg" style="color:var(--c1);display:inline-flex;vertical-align:middle;margin-left:6px"><svg viewBox="0 0 130 115" fill="none" xmlns="http://www.w3.org/2000/svg" width="28" height="24"><g transform="translate(42,62) rotate(-22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="0" cy="-16" r="3.2" fill="currentColor"/><circle cx="0" cy="16" r="3.2" fill="currentColor"/></g><g transform="translate(88,62) rotate(22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="-8" cy="-23" r="3" fill="currentColor"/><circle cx="0" cy="-16" r="3" fill="currentColor"/><circle cx="8" cy="-9" r="3" fill="currentColor"/><circle cx="-8" cy="9" r="3" fill="currentColor"/><circle cx="0" cy="16" r="3" fill="currentColor"/><circle cx="8" cy="23" r="3" fill="currentColor"/></g><g transform="translate(65,50)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="0" cy="-16" r="3.2" fill="currentColor"/><circle cx="-7" cy="10" r="3.2" fill="currentColor"/><circle cx="7" cy="20" r="3.2" fill="currentColor"/></g></svg></span>
-      دومينو
-    </div>
+    <div class="hdr-mid">اللعب الصح مع الناس الغلط</div>
     <div class="hdr-left">
       <button class="theme-ico" id="themeIco" onclick="toggleTheme()" title="الوضع الليلي/النهاري">🌙</button>
-      <button class="theme-ico end-ico" onclick="showResults()" title="إنهاء اللعبة">✕</button>
+      <button class="theme-ico end-ico" onclick="confirmEndGame()" title="إنهاء اللعبة">✕</button>
     </div>
   </div>
 
@@ -380,7 +374,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     <div class="res-king-wrap">
       <div class="res-king-crown">👑</div>
       <div class="res-king-name" id="resKingName"></div>
-      <div class="res-king-title">الكـــنج</div>
+      <div class="res-king-title" style="letter-spacing:0">الكنج ؛ امسكوا الرهوان</div>
     </div>
     <div class="res-rounds" id="resRounds"></div>
   </div>
@@ -388,10 +382,8 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   <div style="display:flex;flex-direction:column;gap:8px;padding:0 16px 24px;width:100%;max-width:420px;margin:0 auto">
     <div style="display:flex;gap:8px">
       <button class="btn-new" style="flex:1;margin:0" onclick="fullReset()">🔁 لعبة جديدة</button>
-      <button onclick="shareScore(false)" title="مشاركة النتيجة"
-        style="padding:14px 14px;background:var(--c1-10);border:1.5px solid var(--c1-50);border-radius:14px;color:var(--primary);font-size:1.1rem;cursor:pointer;flex-shrink:0">📤</button>
-      <button onclick="shareScore(true)" title="مشاركة مع السجل"
-        style="padding:14px 14px;background:var(--c1-10);border:1.5px solid var(--c1-50);border-radius:14px;color:var(--c1);font-size:1.1rem;cursor:pointer;flex-shrink:0">📤🧾</button>
+      <button onclick="shareScore(true)" title="مشاركة النتيجة مع السجل"
+        style="padding:14px 18px;background:var(--c1-10);border:1.5px solid var(--c1-50);border-radius:14px;color:var(--primary);font-size:1.15rem;cursor:pointer;flex-shrink:0">📤</button>
     </div>
     <button onclick="openHistory()" style="width:100%;padding:11px;background:color-mix(in srgb,var(--gold) 12%,transparent);border:1.5px solid color-mix(in srgb,var(--gold) 40%,transparent);border-radius:14px;color:var(--gold);font-size:.88rem;font-weight:700;cursor:pointer;font-family:var(--font)">
       🧾 عرض سجل الجولات
@@ -442,7 +434,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
 <!-- ══ HISTORY MODAL ══ -->
 <div class="overlay" id="mHist">
-  <div class="mbox" style="max-height:88vh">
+  <div class="mbox" style="max-height:calc(100vh - var(--sat) - 16px)">
     <div class="mhdr"><div class="mtitle">🧾 سجل الجولات</div><button class="mclose" onclick="closeM('mHist')">✕</button></div>
     <div id="histBody" style="max-height:70vh;overflow-y:auto;overflow-x:auto"></div>
   </div>
@@ -455,6 +447,16 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     <p class="rst-txt">إعادة نقاط جميع اللاعبين إلى الصفر وحذف سجل الجولات؟</p>
     <button class="btn-danger" onclick="resetScores()">نعم، أعد التعيين</button>
     <button class="btn-sec" onclick="closeM('mReset')">إلغاء</button>
+  </div>
+</div>
+
+<!-- ══ END GAME CONFIRM MODAL ══ -->
+<div class="overlay" id="mEndGame">
+  <div class="mbox">
+    <div class="mhdr"><div class="mtitle">🏁 إنهاء اللعبة</div><button class="mclose" onclick="closeM('mEndGame')">✕</button></div>
+    <p class="rst-txt">هل أنت متأكد من إنهاء اللعبة وعرض النتيجة النهائية؟<br>لن تتمكن من إضافة جولات بعدها.</p>
+    <button class="btn-danger" onclick="closeM('mEndGame');showResults()">نعم، أنهِ اللعبة</button>
+    <button class="btn-sec" onclick="closeM('mEndGame')">إلغاء — أكمل اللعب</button>
   </div>
 </div>
 
@@ -476,18 +478,13 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
 <!-- ══ ARCHIVE MODAL ══ -->
 <div class="overlay" id="mArch">
-  <div class="mbox" style="max-height:88vh">
+  <div class="mbox" style="max-height:calc(100vh - var(--sat) - 16px)">
     <div class="mhdr"><div class="mtitle">🏆 السجل التاريخي — الألعاب السابقة</div><button class="mclose" onclick="closeM('mArch')">✕</button></div>
     <div id="archBody" style="max-height:74vh;overflow-y:auto"></div>
   </div>
 </div>
 
 <div class="notif" id="notif"></div>
-
-<!-- Watermark -->
-<div class="watermark">
-  تم التصميم بواسطة العالمي
-</div>
 
 <script>
 // ═══════════════════════════
@@ -541,6 +538,8 @@ function updateThemeLabels(){
   if(link) link.textContent = currentTheme==='dark' ? '☀️ الوضع النهاري' : '🌙 الوضع الليلي';
   const ico=document.getElementById('themeIco');
   if(ico) ico.textContent = currentTheme==='dark' ? '☀️' : '🌙';
+  const ico2=document.getElementById('themeIco2');
+  if(ico2) ico2.textContent = currentTheme==='dark' ? '☀️' : '🌙';
 }
 // legacy no-ops (previous multi-palette API)
 function renderThemeSwatches(){}
@@ -564,18 +563,12 @@ const PRESETS = ['الخبير','الدكتور','العالمي','الباشا'
 const selectedNames = ['','','',''];
 let poolNames = [...PRESETS];
 const JOKES = [
-  'اللي يخسر يجيب القهوة ☕',
-  'الدبل ما يخون… بس صاحبه أحيانًا 😅',
-  'ركّز في لعبك لا تشيل الدست',
-  'الحظ نص اللعبة… والنص الثاني حظ',
-  'لا تعدّ نقاطك قبل ما تكسر',
-  'الخساره مب عيب… العيب تعيدها',
-  'من يكسب يطنّش ومن يخسر يعصّب',
-  'الكنج ما يشرح… الكنج يلعب 👑',
-  'حجرك سرّك… لا تفشّخه',
-  'اللي ما يعرف يلعب يعدّ النقاط ✍️',
-  'يكفيك شر الديرتي وبتوع شراخيت',
-  'بلا زعل… بس بلا خساره',
+  'الديرتي فن مش عن عن',
+  'يلا يا شوية ناشئين',
+  'بيلعب ورا ناشيء',
+  'يكفيك شر الديرتي وبتوع شبراخيت',
+  'يازيرو بطولات',
+  'تفتكر اني هسيبك',
 ];
 let _jokeTO=null;
 
@@ -1345,75 +1338,78 @@ function openHistory(){
 async function shareScore(withHistory=false){
   if(typeof html2canvas==='undefined'){ notif('ميزة المشاركة تحتاج اتصال بالإنترنت (أول مرة)','e'); return; }
   notif('جارٍ تجهيز الصورة...','i');
-  const CS=THEMES.neon.seats;
+  const CS=['#0F5132','#B4791F','#A63D40','#2C6E8F'];
   const sorted=[...players].sort((a,b)=>b.score-a.score);
   const leader=sorted[0];
   const icons=['👑','🤴','🤡🎖️','🤡'];
-  const titles=['الكنج','صب كنج','صب كوز','الكوز'];
-  const bgCols=['#FFD74018','#C0C0C015','#CD7F3215','#FF525215'];
-  const brCols=['#FFD74050','#C0C0C040','#CD7F3240','#FF525240'];
+  const titles=['الكنج ؛ امسكوا الرهوان','صب كنج ؛ انا اتبقلشت','صب كوز ؛ اتنين ولا واحد بره','الكوز'];
+  const rankBg=['#FBF3DF','#FAF7F1','#FAF7F1','#FAF7F1'];
+  const rankBr=['#E7C976','#E4DBCB','#E4DBCB','#E4DBCB'];
   const now=new Date();
   const dateStr=now.toLocaleDateString('ar-SA-u-nu-latn',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  const dominoSVG=`<svg viewBox="0 0 130 115" width="86" height="76" xmlns="http://www.w3.org/2000/svg"><g transform="translate(42,62) rotate(-22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="#0c0c08" stroke="#F4C74A" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="#F4C74A" stroke-width="1.6"/><circle cx="0" cy="-16" r="3.2" fill="#F4C74A"/><circle cx="0" cy="16" r="3.2" fill="#F4C74A"/></g><g transform="translate(88,62) rotate(22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="#0c0c08" stroke="#F4C74A" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="#F4C74A" stroke-width="1.6"/><circle cx="-8" cy="-23" r="3" fill="#F4C74A"/><circle cx="0" cy="-16" r="3" fill="#F4C74A"/><circle cx="8" cy="-9" r="3" fill="#F4C74A"/><circle cx="-8" cy="9" r="3" fill="#F4C74A"/><circle cx="0" cy="16" r="3" fill="#F4C74A"/><circle cx="8" cy="23" r="3" fill="#F4C74A"/></g><g transform="translate(65,50)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="#0c0c08" stroke="#F4C74A" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="#F4C74A" stroke-width="1.6"/><circle cx="0" cy="-16" r="3.2" fill="#F4C74A"/><circle cx="-7" cy="10" r="3.2" fill="#F4C74A"/><circle cx="7" cy="20" r="3.2" fill="#F4C74A"/></g></svg>`;
+  const dominoSVG=`<svg viewBox="-8 -6 146 127" width="78" height="70" xmlns="http://www.w3.org/2000/svg"><g transform="translate(42,62) rotate(-22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="#FBF8F2" stroke="#0B3D25" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="#0B3D25" stroke-width="1.6"/><circle cx="0" cy="-16" r="3.2" fill="#0B3D25"/><circle cx="0" cy="16" r="3.2" fill="#0B3D25"/></g><g transform="translate(88,62) rotate(22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="#FBF8F2" stroke="#0B3D25" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="#0B3D25" stroke-width="1.6"/><circle cx="-8" cy="-23" r="3" fill="#0B3D25"/><circle cx="0" cy="-16" r="3" fill="#0B3D25"/><circle cx="8" cy="-9" r="3" fill="#0B3D25"/><circle cx="-8" cy="9" r="3" fill="#0B3D25"/><circle cx="0" cy="16" r="3" fill="#0B3D25"/><circle cx="8" cy="23" r="3" fill="#0B3D25"/></g><g transform="translate(65,50)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="#FBF8F2" stroke="#0B3D25" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="#0B3D25" stroke-width="1.6"/><circle cx="0" cy="-16" r="3.2" fill="#0B3D25"/><circle cx="-7" cy="10" r="3.2" fill="#0B3D25"/><circle cx="7" cy="20" r="3.2" fill="#0B3D25"/></g></svg>`;
 
-  // Build history HTML separately to avoid nested template literal issues
+  // Build history HTML separately (elegant light table, ordered by ranking)
   let histHTML = '';
   if(withHistory && history.length){
-    let thCells = '<th style="padding:4px 7px;background:#111128;color:#555;border:1px solid #1c1c30;text-align:right">اللاعب</th>';
-    history.forEach(r=>{ thCells+=`<th style="padding:4px 5px;background:#111128;color:#555;border:1px solid #1c1c30;text-align:center">ج${r.round}</th>`; });
-    thCells+='<th style="padding:4px 5px;background:#111128;color:#777;border:1px solid #1c1c30;text-align:center">المجموع</th>';
+    let thCells = '<th style="padding:6px 8px;background:#0F5132;color:#F6F1E7;border:1px solid #0B3D25;text-align:right;font-weight:bold">اللاعب</th>';
+    history.forEach(r=>{ thCells+=`<th style="padding:6px 5px;background:#0F5132;color:#EBD9A6;border:1px solid #0B3D25;text-align:center">ج${r.round}</th>`; });
+    thCells+='<th style="padding:6px 6px;background:#0B3D25;color:#F6D98A;border:1px solid #0B3D25;text-align:center;font-weight:bold">المجموع</th>';
     let tbRows='';
-    players.forEach(p=>{
-      let cells=`<td style="padding:4px 7px;border:1px solid #1c1c30;color:${CS[p.id]};font-weight:bold;background:#0c0c1a">${p.name}</td>`;
+    sorted.forEach(p=>{
+      let cells=`<td style="padding:5px 8px;border:1px solid #E4DBCB;color:${CS[p.id]};font-weight:bold;background:#F6F1E7">${p.name}</td>`;
       history.forEach(r=>{
         const ae=r.adds.find(e=>e.name===p.name);
         const de=r.deds.find(e=>e.name===p.name);
         const add=ae?ae.add:0, ded=de?de.ded:0;
-        let inner = !add&&!ded ? '<span style="color:#333">—</span>' : '';
-        if(add) inner+=`<span style="color:#69FF47;display:block">+${add}</span>`;
-        if(ded) inner+=`<span style="color:#FF5252;display:block">-${ded}</span>`;
-        cells+=`<td style="padding:3px 4px;border:1px solid #1c1c30;text-align:center;background:#0c0c1a">${inner}</td>`;
+        let inner = !add&&!ded ? '<span style="color:#C9BEA8">—</span>' : '';
+        if(add) inner+=`<span style="color:#0F5132;font-weight:bold;display:block">+${add}</span>`;
+        if(ded) inner+=`<span style="color:#A63D40;font-weight:bold;display:block">-${ded}</span>`;
+        cells+=`<td style="padding:4px 4px;border:1px solid #E4DBCB;text-align:center;background:#FFFFFF">${inner}</td>`;
       });
-      cells+=`<td style="padding:4px 5px;border:1px solid #1c1c30;text-align:center;color:${CS[p.id]};font-weight:bold;background:#0c0c1a">${p.score}</td>`;
+      cells+=`<td style="padding:5px 6px;border:1px solid #E4DBCB;text-align:center;color:${CS[p.id]};font-weight:bold;background:#FBF7EF;font-family:monospace">${p.score}</td>`;
       tbRows+=`<tr>${cells}</tr>`;
     });
-    histHTML=`<div style="margin-top:16px;border-top:1px solid #1a1a2a;padding-top:12px">
-      <div style="font-size:11px;color:#555;font-weight:bold;margin-bottom:8px;font-family:Arial,sans-serif">سجل الجولات</div>
-      <table style="border-collapse:collapse;width:100%;font-size:9px;direction:rtl">
+    histHTML=`<div style="margin-top:16px;border-top:1px solid #E4DBCB;padding-top:12px">
+      <div style="font-size:12px;color:#0F5132;font-weight:bold;margin-bottom:8px;font-family:Arial,sans-serif">🧾 سجل الجولات</div>
+      <table style="border-collapse:collapse;width:100%;font-size:10px;direction:rtl">
         <thead><tr>${thCells}</tr></thead>
         <tbody>${tbRows}</tbody>
       </table></div>`;
   }
 
   const card=document.createElement('div');
-  card.style.cssText=`position:fixed;left:-9999px;top:0;width:380px;background:#07070f;font-family:Arial,sans-serif;direction:rtl;color:#fff;overflow:hidden;`;
-  card.innerHTML=`<div style="padding:22px 18px 18px;font-family:Arial,sans-serif;direction:rtl">
-    <div style="text-align:center;margin-bottom:5px">${dominoSVG}</div>
-    <div style="text-align:center;font-size:12px;color:#444;margin-bottom:2px">${dateStr}</div>
-    <div style="text-align:center;font-size:10px;color:#2a2a3a;margin-bottom:14px">${round-1} جولة · حد النقاط: ${TARGET}</div>
-    <div style="text-align:center;background:#F4C74A18;border:1.5px solid #F4C74A50;border-radius:14px;padding:13px;margin-bottom:11px">
-      <div style="font-size:30px;margin-bottom:3px">👑</div>
-      <div style="font-size:19px;font-weight:bold;color:#F4C74A">${leader.name}</div>
-      <div style="font-size:11px;color:#F4C74A90;margin-top:2px">الكنج · ${leader.score} نقطة</div>
+  card.style.cssText=`position:fixed;left:-9999px;top:0;width:380px;background:#F6F1E7;font-family:Arial,sans-serif;direction:rtl;color:#2B2A26;overflow:hidden;border-radius:0`;
+  card.innerHTML=`<div style="font-family:Arial,sans-serif;direction:rtl">
+    <div style="background:linear-gradient(160deg,#1A7A4A,#0F5132 60%,#0A3A24);padding:20px 18px 16px;text-align:center">
+      <div style="margin-bottom:4px">${dominoSVG}</div>
+      <div style="font-size:16px;font-weight:bold;color:#FBF8F2;letter-spacing:.3px">اللعب الصح مع الناس الغلط</div>
+      <div style="width:60px;height:2px;margin:8px auto 0;background:linear-gradient(90deg,transparent,#EBD9A6,transparent)"></div>
     </div>
-    <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:12px">
-      ${sorted.map((p,i)=>`
-      <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:${bgCols[i]};border:1px solid ${brCols[i]};border-radius:11px">
-        <span style="font-size:18px;flex-shrink:0">${icons[i]}</span>
-        <div style="flex:1"><div style="font-weight:bold;font-size:13px">${p.name}</div><div style="font-size:10px;color:${CS[p.id]}">${titles[i]}</div></div>
-        <div style="font-size:18px;font-weight:bold;color:${CS[p.id]};font-family:monospace">${p.score}</div>
-      </div>`).join('')}
-    </div>
-    ${histHTML}
-    <div style="text-align:center;padding-top:9px;border-top:1px solid #1a1a2a">
-      <span style="font-size:9px;color:#2a2a3a">تم التصميم بواسطة العالمي</span>
+    <div style="padding:16px 18px 18px">
+      <div style="text-align:center;font-size:12px;color:#6B6355;margin-bottom:1px">${dateStr}</div>
+      <div style="text-align:center;font-size:11px;color:#9A907C;margin-bottom:13px">${round-1} جولة</div>
+      <div style="text-align:center;background:#FBF3DF;border:1.5px solid #E7C976;border-radius:14px;padding:13px;margin-bottom:12px">
+        <div style="font-size:30px;margin-bottom:2px">👑</div>
+        <div style="font-size:20px;font-weight:bold;color:#0F5132">${leader.name}</div>
+        <div style="font-size:11px;color:#B4791F;font-weight:bold;margin-top:3px">الكنج ؛ امسكوا الرهوان · ${leader.score} نقطة</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:2px">
+        ${sorted.map((p,i)=>`
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:${rankBg[i]};border:1.2px solid ${rankBr[i]};border-radius:12px">
+          <span style="font-size:18px;flex-shrink:0">${icons[i]}</span>
+          <div style="flex:1"><div style="font-weight:bold;font-size:13px;color:#2B2A26">${p.name}</div><div style="font-size:10px;color:${CS[p.id]};font-weight:bold">${titles[i]}</div></div>
+          <div style="font-size:19px;font-weight:bold;color:${CS[p.id]};font-family:monospace">${p.score}</div>
+        </div>`).join('')}
+      </div>
+      ${histHTML}
     </div>
   </div>`;
 
   document.body.appendChild(card);
   await new Promise(r=>setTimeout(r,300));
   try {
-    const canvas=await html2canvas(card,{backgroundColor:'#07070f',scale:2.5,useCORS:true,allowTaint:true,logging:false});
+    const canvas=await html2canvas(card,{backgroundColor:'#F6F1E7',scale:2.5,useCORS:true,allowTaint:true,logging:false});
     document.body.removeChild(card);
     canvas.toBlob(async(blob)=>{
       const file=new File([blob],'domino-score.png',{type:'image/png'});
@@ -1460,6 +1456,7 @@ function fullReset(){
 // ═══════════════════════════
 // RESULTS
 // ═══════════════════════════
+function confirmEndGame(){ openM('mEndGame'); }
 function showResults(){
   const sorted = [...players].sort((a,b) => b.score - a.score);
 
@@ -1484,25 +1481,20 @@ function showResults(){
 
     // الكنج
     if(score === kingScore && i === 0){
-      return {icon:'👑', title:'الكـنج', color:'#FFD740', cls:'rank-1'};
+      return {icon:'👑', short:'الكنج', title:'الكنج ؛ امسكوا الرهوان', color:'#FFD740', cls:'rank-1'};
     }
     // صب كنج (تعادل مع الثاني أو هو الثاني)
     if(score === secondScore){
-      // إذا كانت نقطته هي الأقل أيضاً (أي تعادل ٣ مع الثاني)
-      if(score === lowestScore){
-        return {icon:'🤴', title:'صب كنج (كوز مؤجل)', color:'#C0C0C0', cls:'rank-2'};
-      }
-      return {icon:'🤴', title:'صب كنج', color:'#C0C0C0', cls:'rank-2'};
+      const suf = (score === lowestScore) ? ' (كوز مؤجل)' : '';
+      return {icon:'🤴', short:'صب كنج', title:'صب كنج ؛ انا اتبقلشت'+suf, color:'#C0C0C0', cls:'rank-2'};
     }
     // صب كوز
     if(score === thirdScore){
-      if(score === lowestScore){
-        return {icon:'🤡🎖️', title:'صب كوز (كوز مؤجل)', color:'#CD7F32', cls:'rank-3'};
-      }
-      return {icon:'🤡🎖️', title:'صب كوز', color:'#CD7F32', cls:'rank-3'};
+      const suf = (score === lowestScore) ? ' (كوز مؤجل)' : '';
+      return {icon:'🤡🎖️', short:'صب كوز', title:'صب كوز ؛ اتنين ولا واحد بره'+suf, color:'#CD7F32', cls:'rank-3'};
     }
     // الكوز
-    return {icon:'🤡', title:'الكـوز', color:'#FF5252', cls:'rank-4'};
+    return {icon:'🤡', short:'الكوز', title:'الكوز', color:'#FF5252', cls:'rank-4'};
   };
 
   document.getElementById('resList').innerHTML = sorted.map((p,i) => {
@@ -1511,7 +1503,7 @@ function showResults(){
     <div class="res-row ${r.cls}" style="animation:slideUp .4s ease ${i*0.1}s both">
       <div class="res-rank-badge">
         <div class="res-rank-icon">${r.icon}</div>
-        <div class="res-rank-lbl" style="color:${r.color};font-size:.6rem">${r.title}</div>
+        <div class="res-rank-lbl" style="color:${r.color};font-size:.6rem">${r.short}</div>
       </div>
       <div class="res-info">
         <div class="res-name">${p.name}</div>
