@@ -1059,39 +1059,12 @@ function applyEndRound(){
       // Clear winner — end game
       setTimeout(()=>showResults(), 900);
     } else {
-      // Tied at top — continue with extra round notice
+      // Tied at top — continue; single floating notification only
       const tiedNames = topTied.map(p=>p.name).join(' و ');
       notif(`⚡ تعادل! ${tiedNames} — تستمر اللعبة`, 'i');
-      // Show a brief banner
-      showTieBanner(topTied);
     }
   }
 }
-
-// ═══════════════════════════
-// TIE BANNER
-// ═══════════════════════════
-function showTieBanner(tiedPlayers){
-  // inject a temporary banner into the game screen
-  let banner = document.getElementById('tieBanner');
-  if(!banner){
-    banner = document.createElement('div');
-    banner.id = 'tieBanner';
-    banner.style.cssText = `
-      position:fixed;top:0;left:0;right:0;z-index:800;
-      padding:12px 18px;text-align:center;font-weight:700;font-size:.88rem;
-      background:linear-gradient(135deg,#FF408120,#FFD74020);
-      border-bottom:1.5px solid #FFD74060;color:var(--c4);
-      animation:slideDown .4s ease;font-family:var(--font);
-      direction:rtl;`;
-    document.body.appendChild(banner);
-  }
-  const names = tiedPlayers.map(p=>`<span style="color:${p.color}">${p.name}</span>`).join(' و ');
-  banner.innerHTML = `⚡ تعادل! ${names} — جولة إضافية لكسر التعادل`;
-  banner.style.display = 'block';
-  setTimeout(()=>{ banner.style.display='none'; }, 4000);
-}
-
 
 const ARABIC_NUMS = {
   'صفر':0,'واحد':1,'واحده':1,'اثنين':2,'اثنان':2,'ثلاثة':3,'ثلاثه':3,
