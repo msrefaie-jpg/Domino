@@ -1287,40 +1287,35 @@ function openHistory(){
     openM('mHist'); return;
   }
 
-  // build table: rows = players, cols = rounds
+  // build table: rows = rounds, cols = players (transposed to stay narrow)
   // each cell shows +add / -ded
   let thead = `<tr>
-    <th class="name-col">اللاعب</th>
-    ${history.map(r=>`<th>ج${r.round}<br><span style="font-size:.6rem;color:#555;font-weight:400">+إضافة / -خصم</span></th>`).join('')}
+    <th class="name-col">الجولة</th>
+    ${players.map(p=>`<th style="color:${p.color}">${p.name}</th>`).join('')}
   </tr>`;
 
-  let tbody = players.map(p => {
-    const cells = history.map(r => {
+  let tbody = history.map(r => {
+    const cells = players.map(p => {
       const addEntry = r.adds.find(e=>e.name===p.name);
       const dedEntry = r.deds.find(e=>e.name===p.name);
       const add = addEntry ? addEntry.add : 0;
       const ded = dedEntry ? dedEntry.ded : 0;
       if(!add && !ded) return `<td><span class="cell-empty">—</span></td>`;
       return `<td>
-        ${add ? `<span class="cell-add">+${add}</span>` : '<span class="cell-empty" style="font-size:.65rem">—</span>'}
-        ${ded ? `<span class="cell-ded">-${ded}</span>` : '<span class="cell-empty" style="font-size:.65rem">—</span>'}
+        ${add ? `<span class="cell-add">+${add}</span>` : ''}
+        ${ded ? `<span class="cell-ded">-${ded}</span>` : ''}
       </td>`;
     }).join('');
     return `<tr>
-      <td class="name-cell" style="color:${p.color}">${p.name}</td>
+      <td class="name-cell">ج${r.round}</td>
       ${cells}
     </tr>`;
   }).join('');
 
-  // totals row
+  // totals row (final scores)
   const totalsRow = `<tr style="border-top:2px solid var(--border)">
-    <td class="name-cell" style="color:#888;font-size:.72rem">المجموع</td>
-    ${history.map(r=>`<td style="font-size:.72rem;color:#aaa;font-weight:700">${
-      players.map(p=>{
-        const t=r.totals[p.name]??'—';
-        return `<span style="color:${p.color};display:block;font-size:.68rem">${p.name.slice(0,4)}: ${t}</span>`;
-      }).join('')
-    }</td>`).join('')}
+    <td class="name-cell" style="color:var(--gold)">المجموع</td>
+    ${players.map(p=>`<td style="font-weight:900;color:${p.color};font-size:.92rem">${p.score}</td>`).join('')}
   </tr>`;
 
   body.innerHTML = `
@@ -1343,7 +1338,7 @@ async function shareScore(withHistory=false){
   const sorted=[...players].sort((a,b)=>b.score-a.score);
   const leader=sorted[0];
   const icons=['👑','🤴','🤡🎖️','🤡'];
-  const titles=['الكنج ؛ امسكوا الرهوان','صب كنج ؛ انا اتبقلشت','صب كوز ؛ اتنين ولا واحد بره','الكوز'];
+  const titles=['الكنج ؛ امسكوا الرهوان','صب كنج ؛ انا اتبقلشت','صب كوز ؛ اتنين ولا واحد بره','كوز ؛ الكنبة تناديك'];
   const rankBg=['#FBF3DF','#FAF7F1','#FAF7F1','#FAF7F1'];
   const rankBr=['#E7C976','#E4DBCB','#E4DBCB','#E4DBCB'];
   const now=new Date();
@@ -1353,13 +1348,14 @@ async function shareScore(withHistory=false){
   // Build history HTML separately (elegant light table, ordered by ranking)
   let histHTML = '';
   if(withHistory && history.length){
-    let thCells = '<th style="padding:6px 8px;background:#0F5132;color:#F6F1E7;border:1px solid #0B3D25;text-align:right;font-weight:bold">اللاعب</th>';
-    history.forEach(r=>{ thCells+=`<th style="padding:6px 5px;background:#0F5132;color:#EBD9A6;border:1px solid #0B3D25;text-align:center">ج${r.round}</th>`; });
-    thCells+='<th style="padding:6px 6px;background:#0B3D25;color:#F6D98A;border:1px solid #0B3D25;text-align:center;font-weight:bold">المجموع</th>';
+    // transposed: rows = rounds, cols = players (stays narrow as rounds grow)
+    const CShead=['#8FD9AE','#EBC45F','#E89A9C','#8FC7E0']; // light variants readable on green header
+    let thCells = '<th style="padding:6px 8px;background:#0F5132;color:#F6F1E7;border:1px solid #0B3D25;text-align:center;font-weight:bold">الجولة</th>';
+    sorted.forEach(p=>{ thCells+=`<th style="padding:6px 5px;background:#0F5132;color:${CShead[p.id]||'#F6F1E7'};border:1px solid #0B3D25;text-align:center;font-weight:bold">${p.name}</th>`; });
     let tbRows='';
-    sorted.forEach(p=>{
-      let cells=`<td style="padding:5px 8px;border:1px solid #E4DBCB;color:${CS[p.id]};font-weight:bold;background:#F6F1E7">${p.name}</td>`;
-      history.forEach(r=>{
+    history.forEach(r=>{
+      let cells=`<td style="padding:5px 6px;border:1px solid #E4DBCB;color:#6B6355;font-weight:bold;background:#F6F1E7;text-align:center">ج${r.round}</td>`;
+      sorted.forEach(p=>{
         const ae=r.adds.find(e=>e.name===p.name);
         const de=r.deds.find(e=>e.name===p.name);
         const add=ae?ae.add:0, ded=de?de.ded:0;
@@ -1368,9 +1364,12 @@ async function shareScore(withHistory=false){
         if(ded) inner+=`<span style="color:#A63D40;font-weight:bold;display:block">-${ded}</span>`;
         cells+=`<td style="padding:4px 4px;border:1px solid #E4DBCB;text-align:center;background:#FFFFFF">${inner}</td>`;
       });
-      cells+=`<td style="padding:5px 6px;border:1px solid #E4DBCB;text-align:center;color:${CS[p.id]};font-weight:bold;background:#FBF7EF;font-family:monospace">${p.score}</td>`;
       tbRows+=`<tr>${cells}</tr>`;
     });
+    // totals row
+    let totCells='<td style="padding:5px 6px;border:1px solid #E4DBCB;background:#0B3D25;color:#F6D98A;font-weight:bold;text-align:center">المجموع</td>';
+    sorted.forEach(p=>{ totCells+=`<td style="padding:5px 6px;border:1px solid #E4DBCB;text-align:center;color:${CS[p.id]};font-weight:bold;background:#FBF3DF;font-family:monospace">${p.score}</td>`; });
+    tbRows+=`<tr>${totCells}</tr>`;
     histHTML=`<div style="margin-top:16px;border-top:1px solid #E4DBCB;padding-top:12px">
       <div style="font-size:12px;color:#0F5132;font-weight:bold;margin-bottom:8px;font-family:Arial,sans-serif">🧾 سجل الجولات</div>
       <table style="border-collapse:collapse;width:100%;font-size:10px;direction:rtl">
@@ -1493,7 +1492,7 @@ function showResults(){
       return {icon:'🤡🎖️', short:'صب كوز', title:'صب كوز ؛ اتنين ولا واحد بره', color:'#CD7F32', cls:'rank-3'};
     }
     // الكوز
-    return {icon:'🤡', short:'الكوز', title:'الكوز', color:'#FF5252', cls:'rank-4'};
+    return {icon:'🤡', short:'الكوز', title:'كوز ؛ الكنبة تناديك', color:'#FF5252', cls:'rank-4'};
   };
 
   document.getElementById('resList').innerHTML = sorted.map((p,i) => {
