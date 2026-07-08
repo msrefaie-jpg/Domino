@@ -99,6 +99,29 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 .btn-arch{width:100%;padding:9px;margin-bottom:7px;background:var(--s1);border:1.5px solid var(--border);border-radius:13px;color:var(--text);font-size:.84rem;font-weight:700;cursor:pointer;font-family:var(--font)}
 .btn-arch:active{transform:scale(.98)}
 .btn-start{width:100%;padding:13px;background:var(--primary);border:none;border-radius:14px;color:#fff;font-size:1rem;font-weight:800;cursor:pointer;letter-spacing:.3px;box-shadow:0 10px 18px -8px color-mix(in srgb,var(--primary) 55%,transparent)}
+.app-title.tagline{font-size:1.32rem;color:var(--primary);line-height:1.35;text-align:center;padding:0 6px}
+/* pool pills */
+.pool-grid{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;width:100%;margin-bottom:10px}
+.pool-pill{padding:8px 15px;border-radius:22px;border:1.5px solid var(--border);background:var(--s1);color:var(--text);font-size:.85rem;font-weight:800;cursor:pointer;font-family:var(--font);transition:transform .12s,background .15s,color .15s,border-color .15s}
+.pool-pill:active{transform:scale(.93)}
+.pool-pill.on{background:var(--primary);border-color:var(--primary);color:#fff}
+/* 2x2 seats */
+.seats-2x2{display:grid;grid-template-columns:1fr 1fr;gap:9px;width:100%;margin-bottom:6px}
+.seat2{border:1.5px dashed var(--border);border-radius:14px;padding:9px 8px 11px;text-align:center;cursor:pointer;background:var(--s1);transition:transform .12s}
+.seat2:active{transform:scale(.97)}
+.seat2.filled{border-style:solid}
+.seat2-hd{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.64rem;color:var(--muted);font-weight:700;margin-bottom:5px}
+.seat2-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.seat2-name{font-size:.95rem;font-weight:800;color:var(--text)}
+.seat2-name.empty{color:var(--muted);opacity:.7}
+.seat-hint{font-size:.66rem;color:var(--muted);text-align:center;margin-bottom:8px}
+/* inline add name */
+.add-row{display:flex;gap:8px;width:100%;margin-bottom:9px}
+.add-inp{flex:1;min-width:0;padding:10px 13px;background:var(--s1);border:1.5px dashed var(--border);border-radius:12px;color:var(--text);font-size:.84rem;outline:none;font-family:var(--font);text-align:right}
+.add-btn2{padding:10px 18px;background:var(--s2);border:1.5px solid var(--primary);border-radius:12px;color:var(--primary);font-weight:800;font-size:.85rem;cursor:pointer;font-family:var(--font);white-space:nowrap;flex-shrink:0}
+.add-btn2:active{transform:scale(.95)}
+/* lucide-style action icons */
+.abt-icon svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block}
 .btn-start:active{transform:scale(.97)}
 
 /* ══ GAME ══ */
@@ -297,36 +320,22 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 <div class="screen active" id="setup">
   <div class="setup-box">
     <div class="big-logo accent-svg" style="width:104px;height:92px;color:var(--c1)"><svg viewBox="0 0 130 115" fill="none" xmlns="http://www.w3.org/2000/svg" width="104" height="92"><g transform="translate(42,62) rotate(-22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="0" cy="-16" r="3.2" fill="currentColor"/><circle cx="0" cy="16" r="3.2" fill="currentColor"/></g><g transform="translate(88,62) rotate(22)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="-8" cy="-23" r="3" fill="currentColor"/><circle cx="0" cy="-16" r="3" fill="currentColor"/><circle cx="8" cy="-9" r="3" fill="currentColor"/><circle cx="-8" cy="9" r="3" fill="currentColor"/><circle cx="0" cy="16" r="3" fill="currentColor"/><circle cx="8" cy="23" r="3" fill="currentColor"/></g><g transform="translate(65,50)"><rect x="-17" y="-31" width="34" height="62" rx="8" fill="var(--s1)" stroke="currentColor" stroke-width="2.5"/><line x1="-17" y1="0" x2="17" y2="0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="0" cy="-16" r="3.2" fill="currentColor"/><circle cx="-7" cy="10" r="3.2" fill="currentColor"/><circle cx="7" cy="20" r="3.2" fill="currentColor"/></g></svg></div>
-    <div class="app-title">دومينو</div>
-    <div class="app-sub">اختر ٤ لاعبين بالترتيب</div>
+    <div class="app-title tagline">اللعب الصح مع الناس الغلط</div>
+    <div class="app-sub" id="jokeSub">😂 أقوال مأثورة</div>
     <div class="resume-note" id="resumeNote" onclick="resumeGame()"></div>
 
-    <!-- مجموعة اللعب -->
-    <div class="group-box">
-      <div class="group-title">👥 مجموعة اللعب</div>
-      <div class="group-slots">
-        <div class="group-slot">
-          <div class="slot-num">١</div>
-          <div class="slot-card" id="slot0" onclick="removeSlot(0)">فارغ</div>
-        </div>
-        <div class="group-slot">
-          <div class="slot-num">٢</div>
-          <div class="slot-card" id="slot1" onclick="removeSlot(1)">فارغ</div>
-        </div>
-        <div class="group-slot">
-          <div class="slot-num">٣</div>
-          <div class="slot-card" id="slot2" onclick="removeSlot(2)">فارغ</div>
-        </div>
-        <div class="group-slot">
-          <div class="slot-num">٤</div>
-          <div class="slot-card" id="slot3" onclick="removeSlot(3)">فارغ</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- بركة اللاعبين -->
-    <div class="pool-title">🎮 اختر من اللاعبين</div>
+    <!-- بركة اللاعبين كأزرار -->
     <div class="pool-grid" id="poolGrid"></div>
+
+    <!-- المقاعد ٢×٢ -->
+    <div class="seats-2x2" id="seatsGrid"></div>
+    <div class="seat-hint">اضغط اسمًا لإجلاسه · اضغط مقعدًا لإفراغه</div>
+
+    <!-- إضافة اسم مؤقت -->
+    <div class="add-row">
+      <input class="add-inp" id="customNameInp2" type="text" autocomplete="off" placeholder="أضف اسمًا مؤقتًا (لا يُحفظ)..." onkeydown="if(event.key==='Enter')addInlineName()">
+      <button class="add-btn2" onclick="addInlineName()">إضافة</button>
+    </div>
 
     <div class="target-row">
       <label>🏁 حد النقاط<br><span style="font-size:.72rem">الخروج عند بلوغه</span></label>
@@ -353,7 +362,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   </div>
 
   <div class="felt"><div class="felt-cap" id="feltCap"></div><div class="cards" id="cardsGrid"></div></div>
-  <div class="leader-strip"><span class="ls-crown">👑</span><div class="ls-mid"><div class="ls-lbl">المتصدّر</div><div class="leader-name" id="leaderName">—</div></div><div class="leader-pts" id="leaderPts"></div></div>
+  <div class="leader-strip"><span class="ls-crown">👑</span><div class="ls-mid"><div class="ls-lbl">المتصدّر · الكنج</div><div class="leader-name" id="leaderName">—</div></div><div class="leader-pts" id="leaderPts"></div></div>
   <div class="mode-strip" id="modeStrip">
     <div>
       <div class="mode-label">🟢 أثناء الجولة</div>
@@ -553,6 +562,22 @@ function initSplash(){
 // ═══════════════════════════
 const PRESETS = ['الخبير','الدكتور','العالمي','الباشا','القائد','ابو عمار','ابو سيف','ابو ادهم'];
 const selectedNames = ['','','',''];
+let poolNames = [...PRESETS];
+const JOKES = [
+  'اللي يخسر يجيب القهوة ☕',
+  'الدبل ما يخون… بس صاحبه أحيانًا 😅',
+  'ركّز في لعبك لا تشيل الدست',
+  'الحظ نص اللعبة… والنص الثاني حظ',
+  'لا تعدّ نقاطك قبل ما تكسر',
+  'الخساره مب عيب… العيب تعيدها',
+  'من يكسب يطنّش ومن يخسر يعصّب',
+  'الكنج ما يشرح… الكنج يلعب 👑',
+  'حجرك سرّك… لا تفشّخه',
+  'اللي ما يعرف يلعب يعدّ النقاط ✍️',
+  'يكفيك شر الديرتي وبتوع شراخيت',
+  'بلا زعل… بس بلا خساره',
+];
+let _jokeTO=null;
 
 (function(){
   const bg = document.getElementById('bgTiles');
@@ -568,100 +593,76 @@ const selectedNames = ['','','',''];
   const _resumed = loadState();
   applyTheme(THEMES[_st]?_st:'light');
   if(_resumed) showResumeNote();
+  startJokeRotation();
   initSplash();
 })();
 
-function buildPool(){
+function esc(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function buildPool(){ renderPool(); renderSeats(); }
+function renderPool(){
   const grid=document.getElementById('poolGrid');
   if(!grid) return;
-  grid.innerHTML=PRESETS.map(name=>`
-    <button class="pool-btn" id="pb_${name.replace(/ /g,'_')}" onclick="pickPlayer('${name}')">${name}</button>
-  `).join('')+`<button class="pool-btn custom-btn-pool" onclick="pickCustom()">✏️ اسم آخر</button>`;
+  grid.innerHTML=poolNames.map(name=>{
+    const on=selectedNames.includes(name);
+    return `<button class="pool-pill${on?' on':''}" data-n="${esc(name)}" onclick="pickPlayer(this.dataset.n)">${esc(name)}</button>`;
+  }).join('');
 }
+function renderSeats(){
+  const grid=document.getElementById('seatsGrid');
+  if(!grid) return;
+  grid.innerHTML=[0,1,2,3].map(i=>{
+    const nm=selectedNames[i];
+    const col=pcolor(i);
+    if(nm){
+      return `<div class="seat2 filled" style="border-color:${col}" onclick="removeSlot(${i})">
+        <div class="seat2-hd"><span class="seat2-dot" style="background:${col}"></span>مقعد ${['١','٢','٣','٤'][i]}</div>
+        <div class="seat2-name" style="color:${col}">${esc(nm)}</div>
+      </div>`;
+    }
+    return `<div class="seat2">
+      <div class="seat2-hd"><span class="seat2-dot" style="background:${col}"></span>مقعد ${['١','٢','٣','٤'][i]}</div>
+      <div class="seat2-name empty">فارغ</div>
+    </div>`;
+  }).join('');
+}
+function refreshSlots(){ renderPool(); renderSeats(); }
 
 function pickPlayer(name){
+  if(selectedNames.includes(name)){ return; }           // already seated
   const slot=selectedNames.indexOf('');
-  if(slot===-1){notif('المجموعة ممتلئة، اضغط على اسم لإزالته','e');return;}
+  if(slot===-1){ notif('اكتملت المقاعد — اضغط مقعدًا لإفراغه','e'); return; }
   selectedNames[slot]=name;
   refreshSlots();
-  const btn=document.getElementById('pb_'+name.replace(/ /g,'_'));
-  if(btn) btn.classList.add('used');
 }
-
-function pickCustom(){
-  const slot=selectedNames.indexOf('');
-  if(slot===-1){notif('المجموعة ممتلئة، اضغط على اسم لإزالته','e');return;}
-  // Show inline input overlay
-  const existing=document.getElementById('customInputWrap');
-  if(existing) existing.remove();
-  const wrap=document.createElement('div');
-  wrap.id='customInputWrap';
-  wrap.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:600;display:flex;align-items:flex-end;justify-content:center';
-  wrap.innerHTML=`
-    <div style="background:var(--s1);border:1px solid var(--border);border-radius:20px 20px 0 0;padding:20px 16px 32px;width:100%;max-width:480px">
-      <div style="font-size:.9rem;font-weight:700;margin-bottom:14px;color:var(--text)">✏️ اسم اللاعب ${slot+1}</div>
-      <input id="customNameInp" type="text" autocomplete="off"
-        style="width:100%;padding:13px 16px;background:var(--s2);border:1.5px solid ${pcolor(slot)};border-radius:13px;color:var(--text);font-size:1rem;font-family:'Cairo',sans-serif;outline:none;direction:rtl"
-        placeholder="اكتب الاسم...">
-      <div style="display:flex;gap:10px;margin-top:14px">
-        <button onclick="confirmCustomName(${slot})"
-          style="flex:1;padding:13px;background:var(--c1-10);border:1.5px solid var(--c1-50);border-radius:13px;color:var(--c1);font-weight:700;font-size:.95rem;cursor:pointer;font-family:'Cairo',sans-serif">
-          تأكيد ✓
-        </button>
-        <button onclick="document.getElementById('customInputWrap').remove()"
-          style="padding:13px 18px;background:var(--s2);border:1px solid var(--border);border-radius:13px;color:var(--muted);font-size:.9rem;cursor:pointer;font-family:'Cairo',sans-serif">
-          إلغاء
-        </button>
-      </div>
-    </div>`;
-  document.body.appendChild(wrap);
-  setTimeout(()=>{
-    const inp=document.getElementById('customNameInp');
-    if(inp){ inp.focus(); inp.addEventListener('keydown',e=>{ if(e.key==='Enter') confirmCustomName(slot); }); }
-  },100);
-}
-
-function confirmCustomName(slot){
-  const inp=document.getElementById('customNameInp');
-  if(!inp) return;
-  const t=inp.value.trim();
-  if(!t){notif('أدخل اسماً صحيحاً','e');return;}
-  if(selectedNames.includes(t)){notif('هذا الاسم مختار بالفعل','e');return;}
-  selectedNames[slot]=t;
-  refreshSlots();
-  const wrap=document.getElementById('customInputWrap');
-  if(wrap) wrap.remove();
-}
-
 function removeSlot(slot){
-  const name=selectedNames[slot];
-  if(!name) return;
-  const btn=document.getElementById('pb_'+name.replace(/ /g,'_'));
-  if(btn) btn.classList.remove('used');
+  if(!selectedNames[slot]) return;
   selectedNames.splice(slot,1);
   selectedNames.push('');
   refreshSlots();
 }
-
-function refreshSlots(){
-  for(let i=0;i<4;i++){
-    const card=document.getElementById('slot'+i);
-    if(!card) continue;
-    if(selectedNames[i]){
-      card.textContent=selectedNames[i];
-      card.className='slot-card filled';
-      card.style.background=pcolor(i)+'25';
-      card.style.borderColor=pcolor(i);
-      card.style.color=pcolor(i);
-    } else {
-      card.textContent='فارغ';
-      card.className='slot-card';
-      card.style.background='';
-      card.style.borderColor='';
-      card.style.color='';
-    }
-  }
+function addInlineName(){
+  const inp=document.getElementById('customNameInp2');
+  if(!inp) return;
+  const t=inp.value.trim();
+  if(!t){ notif('اكتب اسمًا أولاً','e'); return; }
+  if(selectedNames.includes(t)){ notif('هذا الاسم مجلوس بالفعل','e'); return; }
+  if(selectedNames.indexOf('')===-1){ notif('اكتملت المقاعد — اضغط مقعدًا لإفراغه','e'); return; }
+  if(!poolNames.includes(t)) poolNames.push(t);   // temporary (not persisted)
+  pickPlayer(t);
+  inp.value='';
 }
+
+// ═══════════════════════════
+// ROTATING JOKES / CAPTIONS
+// ═══════════════════════════
+function pickJoke(){ return JOKES[Math.floor((Date.now()/1000)+Math.random()*JOKES.length)%JOKES.length]; }
+function rotateJokes(){
+  const sub=document.getElementById('jokeSub');
+  if(sub) sub.textContent='😂 '+pickJoke();
+  const fc=document.getElementById('feltCap');
+  if(fc && document.getElementById('game').classList.contains('active')) fc.textContent='🎯 '+pickJoke();
+}
+function startJokeRotation(){ if(_jokeTO) clearInterval(_jokeTO); rotateJokes(); _jokeTO=setInterval(rotateJokes,6500); }
 
 // ═══════════════════════════
 // START
@@ -692,7 +693,7 @@ function showResumeNote(){
   n.innerHTML=`▶️ لديك لعبة محفوظة (جولة ${round}) — المتصدر ${ldr.name} بـ ${ldr.score}<br><span style="font-size:.72rem;opacity:.7">اضغط للاستئناف</span>`;
   n.style.display='block';
 }
-function resumeGame(){ showScreen('game'); renderGame(); requestWakeLock(); }
+function resumeGame(){ showScreen('game'); renderGame(); rotateJokes(); requestWakeLock(); }
 
 // ═══════════════════════════
 // ARCHIVE (historical games log)
@@ -800,6 +801,7 @@ function startGame(){
   round=1; history=[]; undoStack=[];
   showScreen('game');
   renderGame();
+  rotateJokes();
   requestWakeLock();
   saveState();
   notif('🎲 بدأت اللعبة!','s');
@@ -818,7 +820,7 @@ function renderGame(){
   document.getElementById('leaderName').textContent = leader.name;
   document.getElementById('leaderName').style.color = leader.color;
   const _lp=document.getElementById('leaderPts'); if(_lp){ _lp.textContent=ea(leader.score)+' نقطة'; _lp.style.color=leader.color; }
-  const _fc=document.getElementById('feltCap'); if(_fc) _fc.textContent=`🎯 الهدف ${ea(TARGET)} نقطة`;
+  const _fc=document.getElementById('feltCap'); if(_fc && !_fc.textContent) _fc.textContent='🎯 '+pickJoke();
 
   // cards — ALWAYS in original seat order (players[0..3])
   const grid = document.getElementById('cardsGrid');
@@ -844,11 +846,18 @@ function renderGame(){
 
   // action bar (voice toggle merged here)
   const rec = !!uVoiceRec;
+  const IC = {
+    mic:'<svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>',
+    stop:'<svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>',
+    undo:'<svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>',
+    clock:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>',
+    refresh:'<svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>',
+  };
   const acts = [
-    {icon: rec?'⏹️':'🎙️', lbl: rec?'إيقاف':'صوتي', fn:"toggleVoice()", active:rec},
-    {icon:'↩️',lbl:'تراجع', fn:"undoLast()", disabled: undoStack.length===0},
-    {icon:'🧾',lbl:'السجل', fn:"openHistory()"},
-    {icon:'🔁',lbl:'إعادة', fn:"openM('mReset')"},
+    {icon: rec?IC.stop:IC.mic, lbl: rec?'إيقاف':'صوتي', fn:"toggleVoice()", active:rec},
+    {icon:IC.undo,lbl:'تراجع', fn:"undoLast()", disabled: undoStack.length===0},
+    {icon:IC.clock,lbl:'السجل', fn:"openHistory()"},
+    {icon:IC.refresh,lbl:'إعادة', fn:"openM('mReset')"},
   ];
   document.getElementById('actBar').innerHTML = acts.map(a=>`
     <button class="abt${a.active?' active':''}" ${a.disabled?'disabled':''} onclick="${a.fn}">
