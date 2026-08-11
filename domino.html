@@ -301,17 +301,6 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 @keyframes crownBounce{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-10px) rotate(5deg)}}
 @keyframes confettiFall{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
 @keyframes notifIn{from{transform:translateX(-50%) translateY(-12px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
-/* TEMP-PRANK: نافذة "العالمي في الساحل" (مؤقت — يُزال لاحقًا) */
-.prank-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:4000;display:none;align-items:center;justify-content:center;padding:24px}
-.prank-overlay.open{display:flex;animation:dtFade .25s ease}
-.prank-box{background:var(--s1);border:2px solid var(--gold);border-radius:22px;padding:26px 22px 20px;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.45);animation:spPop .45s cubic-bezier(.34,1.4,.5,1)}
-.prank-emoji{font-size:3.1rem;margin-bottom:6px}
-.prank-title{font-size:1.32rem;font-weight:900;color:var(--gold);margin-bottom:12px}
-.prank-msg{font-size:.96rem;line-height:2;color:var(--text);margin-bottom:20px}
-.prank-ok{width:100%;padding:14px;background:var(--primary);border:none;border-radius:14px;color:#fff;font-size:1.02rem;font-weight:800;cursor:pointer;font-family:var(--font)}
-.prank-ok:active{transform:scale(.97)}
-.pool-pill.blocked{opacity:.5;text-decoration:line-through;text-decoration-color:var(--danger);text-decoration-thickness:2px}
-/* END TEMP-PRANK */
 </style>
 </head>
 <body>
@@ -498,17 +487,6 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
 <div class="notif" id="notif"></div>
 
-<!-- TEMP-PRANK: نافذة "العالمي في الساحل" (مؤقت — يُزال لاحقًا) -->
-<div class="prank-overlay" id="prankAlami">
-  <div class="prank-box">
-    <div class="prank-emoji">😄</div>
-    <div class="prank-title">العالمي في الساحل</div>
-    <p class="prank-msg">يرجى عدم اختيار العالمي يا ابو سيف تجنبًا لإغلاق التطبيق والعودة إلى عصر البحث عن مواطن وقلم</p>
-    <button class="prank-ok" onclick="closePrank()">موافق</button>
-  </div>
-</div>
-<!-- END TEMP-PRANK -->
-
 <script>
 // ═══════════════════════════
 // STATE
@@ -572,18 +550,10 @@ function initSplash(){
   const sp=document.getElementById('splash'); if(!sp) return;
   document.documentElement.classList.add('introbg');   // green backdrop so no gutter shows during intro
   let done=false;
-  const hide=()=>{ if(done) return; done=true; document.documentElement.classList.remove('introbg'); sp.classList.add('hide'); setTimeout(()=>{sp.style.display='none'; maybeShowPrank();},650); };  // TEMP-PRANK: maybeShowPrank
+  const hide=()=>{ if(done) return; done=true; document.documentElement.classList.remove('introbg'); sp.classList.add('hide'); setTimeout(()=>{sp.style.display='none';},650); };
   sp.addEventListener('click',hide);
   setTimeout(hide,3400);
 }
-/* TEMP-PRANK: نافذة "العالمي في الساحل" (مؤقت — يُزال لاحقًا) */
-function maybeShowPrank(){
-  const setup=document.getElementById('setup');
-  if(setup && setup.classList.contains('active')) openPrank();
-}
-function openPrank(){ const o=document.getElementById('prankAlami'); if(o) o.classList.add('open'); }
-function closePrank(){ const o=document.getElementById('prankAlami'); if(o) o.classList.remove('open'); }
-/* END TEMP-PRANK */
 
 
 
@@ -628,8 +598,7 @@ function renderPool(){
   if(!grid) return;
   grid.innerHTML=poolNames.map(name=>{
     const on=selectedNames.includes(name);
-    const blk=(name==='العالمي')?' blocked':'';   // TEMP-PRANK
-    return `<button class="pool-pill${on?' on':''}${blk}" data-n="${esc(name)}" onclick="pickPlayer(this.dataset.n)">${esc(name)}</button>`;
+    return `<button class="pool-pill${on?' on':''}" data-n="${esc(name)}" onclick="pickPlayer(this.dataset.n)">${esc(name)}</button>`;
   }).join('');
 }
 function renderSeats(){
@@ -653,7 +622,6 @@ function renderSeats(){
 function refreshSlots(){ renderPool(); renderSeats(); }
 
 function pickPlayer(name){
-  if(name==='العالمي'){ notif('قلنا في الساحل 😄','e'); return; }  // TEMP-PRANK
   if(selectedNames.includes(name)){ return; }           // already seated
   const slot=selectedNames.indexOf('');
   if(slot===-1){ notif('اكتملت المقاعد — اضغط مقعدًا لإفراغه','e'); return; }
@@ -670,7 +638,6 @@ function addInlineName(){
   const inp=document.getElementById('customNameInp2');
   if(!inp) return;
   const t=inp.value.trim();
-  if(t==='العالمي'){ notif('قلنا في الساحل 😄','e'); inp.value=''; return; }  // TEMP-PRANK
   if(!t){ notif('اكتب اسمًا أولاً','e'); return; }
   if(selectedNames.includes(t)){ notif('هذا الاسم مجلوس بالفعل','e'); return; }
   if(selectedNames.indexOf('')===-1){ notif('اكتملت المقاعد — اضغط مقعدًا لإفراغه','e'); return; }
